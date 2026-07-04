@@ -12,7 +12,7 @@ One-time setup: `make setup` (creates `.venv` with pytest/ruff/mypy from `requir
 - `make test` — `pytest` (`tests/`, no network — parsers are tested against fixtures with `fetch.http_get` monkeypatched)
 - `make fetch` — refresh `data/data.json` from live sources (network; don't commit a locally-degraded data.json — FRED/Yahoo are blocked from this network, CI regenerates it)
 
-`.github/workflows/ci.yml` runs the same gate on every PR and on pushes to main (data-only bot commits are excluded via `paths-ignore`). The check is informational, not a required status check: GitHub applies required checks to *direct pushes* too, which would block the data bot's 4×/day `data:` commits (tried 2026-07-04, bot pushes got rejected, protection removed). Don't re-add required checks on main without giving the bot a bypass.
+`.github/workflows/ci.yml` runs the same gate on every PR and on pushes to main (data-only bot commits are excluded via `paths-ignore`). The check is informational, not a required status check: GitHub applies required checks to *direct pushes* too, which would block the data bot's daily `data:` commits (tried 2026-07-04, bot pushes got rejected, protection removed). Don't re-add required checks on main without giving the bot a bypass.
 
 Constraints to preserve:
 - `scripts/fetch.py` must stay **stdlib-only** at runtime — the Actions cron runs it with zero installs. Dev tools live in `requirements-dev.txt` only.

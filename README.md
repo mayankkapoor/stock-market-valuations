@@ -11,8 +11,9 @@ rebuilt for a US + India + derivatives book.
 
 - `scripts/fetch.py` (Python stdlib only, no API keys) pulls every indicator
   from free public sources and writes `data/data.json`.
-- A GitHub Actions cron (`.github/workflows/update-data.yml`) runs it 4×/day
-  and commits the refreshed JSON.
+- A GitHub Actions cron (`.github/workflows/update-data.yml`) runs it once a
+  day (01:20 UTC, after US close) and commits the refreshed JSON. All sources
+  are end-of-day data, so more frequent runs add nothing.
 - GitHub Pages serves `index.html`, which renders the JSON client-side.
 - If a source is unreachable, the last good value is kept and marked `STALE` —
   one broken API never breaks the page.

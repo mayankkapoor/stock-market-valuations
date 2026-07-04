@@ -2,8 +2,9 @@ name: Update indicator data
 
 on:
   schedule:
-    # 4x/day: after US close, before/after India close, mid-Europe (UTC)
-    - cron: "20 1,7,13,21 * * *"
+    # Once daily at 01:20 UTC — after US close, with India's EOD file
+    # (published ~12:30 UTC) from the same calendar day already available.
+    - cron: "20 1 * * *"
   workflow_dispatch:
 
 permissions:
