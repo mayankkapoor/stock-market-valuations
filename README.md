@@ -35,8 +35,16 @@ deliberately **no composite bubble score**.
 
 ## Known quirks
 
-- FRED (`fredgraph.csv`) is geo-blocked on some non-US networks; the Actions
-  runner (US IP) fetches it fine. Locally those gauges may show STALE.
+- FRED's keyless `fredgraph.csv` is bot-filtered on many datacenter and
+  non-US networks (including, at times, GitHub Actions). **Add a free
+  `FRED_API_KEY` repo secret** (get one in 2 minutes at
+  [fred.stlouisfed.org/docs/api](https://fred.stlouisfed.org/docs/api/api_key.html))
+  and the fetcher switches to the official API, which is reliable — this
+  lights up the Buffett Indicator, Tobin's Q, S&P÷M2, HY spread and
+  NDX/SPX gauges.
+- Yahoo Finance heavily rate-limits shared cloud IPs; Yahoo-sourced gauges
+  (AAPL P/E, and index ratios when FRED is unavailable) fill
+  opportunistically and stay STALE otherwise.
 - NSE blocks many datacenter/cloud IPs. Current India values come from the
   open `nsearchives.nseindia.com` daily CSV, which is far more reliable than
   the nseindia.com APIs; the option-chain PCR is best-effort.

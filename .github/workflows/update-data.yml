@@ -20,6 +20,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Fetch indicators
+        env:
+          # Optional but recommended: free key from fred.stlouisfed.org/docs/api
+          # makes the FRED-sourced gauges reliable from Actions runners.
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python3 scripts/fetch.py
 
       - name: Commit refreshed data

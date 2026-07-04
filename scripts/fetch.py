@@ -121,9 +121,28 @@ def ordinal(n):
 # ---------------------------------------------------------------------------
 
 def fred_csv(series_id):
-    """FRED fredgraph CSV -> list of (iso_date, float). Keyless; US-reachable."""
+    """FRED series -> list of (iso_date, float).
+
+    Prefers the official API when a free FRED_API_KEY is set (reliable from
+    datacenter IPs). Falls back to the keyless fredgraph CSV, which Akamai
+    sometimes blocks/slows for cloud and non-US networks.
+    """
+    import os
+    key = os.environ.get("FRED_API_KEY", "").strip()
+    if key:
+        body = http_get("https://api.stlouisfed.org/fred/series/observations"
+                        f"?series_id={series_id}&api_key={key}&file_type=json",
+                        timeout=40, retries=2)
+        obs = json.loads(body).get("observations", [])
+        out = [(o["date"], float(o["value"])) for o in obs if o.get("value") not in (".", "", None)]
+        if not out:
+            raise ValueError(f"FRED API {series_id}: no observations")
+        return out
     body = http_get(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}",
-                    timeout=25, retries=1)
+                    headers={"Accept": "text/csv,*/*;q=0.8",
+                             "Accept-Language": "en-US,en;q=0.9",
+                             "Referer": f"https://fred.stlouisfed.org/series/{series_id}"},
+                    timeout=55, retries=2, backoff=8)
     out = []
     for row in csv.reader(io.StringIO(body)):
         if len(row) != 2 or row[0] in ("DATE", "observation_date"):
@@ -135,6 +154,14 @@ def fred_csv(series_id):
     if not out:
         raise ValueError(f"FRED {series_id}: no rows parsed")
     return out
+
+
+def spx_series():
+    """S&P 500 daily closes: Yahoo primary, FRED SP500 fallback."""
+    try:
+        return yahoo_chart("^GSPC", range_="10y")
+    except Exception:  # noqa: BLE001
+        return fred_csv("SP500")
 
 
 _yahoo_last_call = [0.0]
@@ -427,16 +454,19 @@ def build_us_panel(ctx):
                     "weak decade-ahead returns.", "multpl.com", ctx))
 
     def buffett():
-        w5000 = yahoo_chart("^W5000", range_="10y")
+        try:
+            mcap = [(d, v * 1.05) for d, v in yahoo_chart("^W5000", range_="10y")]
+        except Exception:  # noqa: BLE001 - Yahoo throttled; Z.1 equities ($M -> $B)
+            mcap = [(d, v / 1000.0) for d, v in fred_csv("BOGZ1LM893064105Q")]
         try:
             gdp = fred_csv("GDP")  # quarterly SAAR, $B
-        except Exception:  # noqa: BLE001 - FRED geo-blocked locally
+        except Exception:  # noqa: BLE001 - FRED blocked; latest annual from World Bank
             wb = http_get("https://api.worldbank.org/v2/country/US/indicator/"
                           "NY.GDP.MKTP.CD?format=json&per_page=5&date=2020:2030")
             rows = [r for r in json.loads(wb)[1] if r["value"]]
             latest = max(rows, key=lambda r: r["date"])
             gdp = [(f"{latest['date']}-12-31", latest["value"] / 1e9)]
-        series = ratio_series(w5000, gdp, lambda a, b: a * 1.05 / b * 100)
+        series = ratio_series(mcap, gdp, lambda a, b: a / b * 100)
         v = round(series[-1][1], 0)
         if v > 170:
             st = "red"
@@ -506,7 +536,7 @@ def build_us_panel(ctx):
                     "un-inverts, not during the inversion.", "US Treasury", ctx))
 
     def spx_m2():
-        spx = yahoo_chart("^GSPC", range_="10y")
+        spx = spx_series()
         m2 = fred_csv("M2SL")  # $B, monthly
         series = ratio_series(spx, m2, lambda a, b: a / b)
         vals = [v for _, v in series]
@@ -691,8 +721,12 @@ def build_tech_panel(ctx):
                     "how much.", "SlickCharts", ctx))
 
     def ndx_spx():
-        ndx = yahoo_chart("^NDX", range_="10y")
-        spx = yahoo_chart("^GSPC", range_="10y")
+        try:
+            ndx = yahoo_chart("^NDX", range_="10y")
+            spx = yahoo_chart("^GSPC", range_="10y")
+        except Exception:  # noqa: BLE001 - Yahoo throttled; FRED mirrors both
+            ndx = fred_csv("NASDAQ100")
+            spx = fred_csv("SP500")
         series = ratio_series(ndx, spx, lambda a, b: a / b)
         v = round(series[-1][1], 3)
         pct = percentile_rank([x for _, x in series], v)
