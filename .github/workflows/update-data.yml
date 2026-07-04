@@ -35,5 +35,7 @@ jobs:
             echo "No data changes."
           else
             git commit -m "data: refresh indicators ($(date -u +%Y-%m-%dT%H:%MZ))"
+            # Survive concurrent pushes to main (code commits land mid-run)
+            git pull --rebase origin main
             git push
           fi
