@@ -16,6 +16,9 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
+    # FRED_API_KEY lives in the github-pages environment's secrets;
+    # declaring the environment is what makes it visible to this job.
+    environment: github-pages
     steps:
       - uses: actions/checkout@v4
 
