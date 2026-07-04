@@ -1,14 +1,14 @@
 {
- "generated_at": "2026-07-04T04:00:55Z",
+ "generated_at": "2026-07-04T04:13:36Z",
  "panels": [
   {
    "id": "us",
    "title": "US Market",
    "subtitle": "Your large/mid/small-cap US index exposure \u2014 classic valuation, complacency and macro bubble measures.",
    "summary": {
-    "red": 4,
+    "red": 5,
     "amber": 2,
-    "green": 1,
+    "green": 0,
     "na": 0,
     "verdict": "Elevated risk: measures stretched"
    },
@@ -30,13 +30,14 @@
      "source": "multpl.com",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T04:00:55Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 335.0,
      "unit": "% GDP",
      "status": "red",
-     "context": "335% of GDP \u2014 Buffett called 150\u2013200% 'playing with fire'",
+     "context": "335% of GDP \u2014 99th percentile since the 1950s",
+     "percentile": 99,
      "spark": [
       [
        "2024-10-01",
@@ -64,42 +65,42 @@
       ]
      ],
      "id": "buffett",
-     "name": "Buffett Indicator",
-     "explainer": "Total US equity market value (Wilshire 5000, ~$1.05B per index point) \u00f7 GDP. Buffett called it 'probably the best single measure of where valuations stand'.",
-     "source": "Yahoo ^W5000 + FRED GDP",
+     "name": "Buffett Indicator (Z.1 basis)",
+     "explainer": "All US corporate equities (Fed Z.1, includes unlisted companies) \u00f7 GDP, so it prints higher than the famous Wilshire-based 150\u2013200% quote \u2014 compare the percentile, not the headline number.",
+     "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T04:00:55Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
-     "value": 0.0,
+     "value": 1.82,
      "unit": "",
-     "status": "green",
-     "context": "0.0 vs ~0.75 long-run mean",
+     "status": "red",
+     "context": "1.82 vs ~0.75 long-run mean",
      "spark": [
       [
        "2024-10-01",
-       0.0019
+       1.8972
       ],
       [
        "2025-01-01",
-       0.0018
+       1.7982
       ],
       [
        "2025-04-01",
-       0.0019
+       1.9049
       ],
       [
        "2025-07-01",
-       0.0019
+       1.9429
       ],
       [
        "2025-10-01",
-       0.0019
+       1.9359
       ],
       [
        "2026-01-01",
-       0.0018
+       1.8188
       ]
      ],
      "id": "tobinq",
@@ -107,8 +108,8 @@
      "explainer": "Market value of nonfinancial companies \u00f7 replacement cost of their assets. Long-run mean is ~0.75; above 1 the market prices companies above their tangible worth.",
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
-     "statusLabel": "NORMAL",
-     "updated": "2026-07-04T04:00:55Z"
+     "statusLabel": "STRETCHED",
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 0.35,
@@ -627,7 +628,7 @@
      "source": "US Treasury",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T04:00:55Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 0.325,
@@ -1147,7 +1148,7 @@
      "source": "Yahoo + FRED M2",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T04:00:55Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 16.1,
@@ -1682,7 +1683,7 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T04:00:55Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 2.75,
@@ -2225,14 +2226,14 @@
      "source": "FRED / ICE BofA",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T04:00:55Z"
+     "updated": "2026-07-04T04:13:36Z"
     }
    ]
   },
   {
    "id": "india",
    "title": "India",
-   "subtitle": "Nifty large/mid/small valuation vs their own 10-year history.",
+   "subtitle": "Nifty large/mid/small valuation vs their own 10-year history. NSE data as of 2026-07-03.",
    "summary": {
     "red": 0,
     "amber": 1,
@@ -2353,9 +2354,9 @@
      "name": "Nifty 50 P/E",
      "explainer": "Price \u00f7 consolidated trailing earnings for India's benchmark 50. NSE switched to consolidated EPS in 2021, so compare against the post-2021 range more than the raw long-term average.",
      "source": "NSE indices archive",
-     "stale": true,
+     "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-04T03:07:57Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 3.17,
@@ -2469,9 +2470,9 @@
      "name": "Nifty 50 P/B",
      "explainer": "Price-to-book for the Nifty 50. Immune to the 2021 earnings-methodology change, so it's the cleaner long-run valuation gauge for Indian large caps.",
      "source": "NSE indices archive",
-     "stale": true,
+     "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-04T03:07:57Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 40.2,
@@ -2585,9 +2586,9 @@
      "name": "Midcap 150 P/E premium",
      "explainer": "How much more expensive midcaps are than the Nifty 50. This premium blowing out is THE India froth signal \u2014 when it spiked in early 2024, SEBI forced AMCs into stress-test disclosures.",
      "source": "NSE indices archive",
-     "stale": true,
+     "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-04T03:07:57Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 72.4,
@@ -2701,9 +2702,9 @@
      "name": "Smallcap 250 P/E premium",
      "explainer": "Smallcap P/E versus the Nifty 50. Small caps carry higher risk and historically trade at a discount \u2014 a fat premium means retail euphoria.",
      "source": "NSE indices archive",
-     "stale": true,
+     "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T03:07:57Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 1.25,
@@ -2817,9 +2818,9 @@
      "name": "Nifty 50 dividend yield",
      "explainer": "Dividends \u00f7 price, inverted valuation: the LOWER the yield, the more expensive the market. Bottom-decile yield has marked every Indian market top.",
      "source": "NSE indices archive",
-     "stale": true,
+     "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-04T03:07:57Z"
+     "updated": "2026-07-04T04:13:36Z"
     }
    ]
   },
@@ -2852,7 +2853,7 @@
      "source": "SlickCharts",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T04:00:55Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 3.919,
@@ -3372,7 +3373,7 @@
      "source": "Yahoo Finance",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T04:00:55Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "id": "aapl_pe",
@@ -3514,9 +3515,9 @@
      "name": "India VIX",
      "explainer": "Implied volatility of Nifty options. For an FnO trader this is the price of optionality itself: very low VIX = cheap hedges, expensive complacency, and violent unwinds when the regime flips.",
      "source": "NSE indices archive",
-     "stale": true,
+     "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T03:07:57Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "id": "pcr",
@@ -4049,7 +4050,7 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T04:00:55Z"
+     "updated": "2026-07-04T04:13:36Z"
     },
     {
      "value": 150.0,
@@ -4568,7 +4569,7 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T04:00:55Z"
+     "updated": "2026-07-04T04:13:36Z"
     }
    ]
   }
