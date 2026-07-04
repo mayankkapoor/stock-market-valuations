@@ -1,0 +1,35 @@
+# Tool configuration only — the runtime (scripts/fetch.py) is stdlib-only by
+# design so the GitHub Actions cron needs zero installs. Dev tooling lives in
+# requirements-dev.txt.
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint.per-file-ignores]
+# Fixture payloads mirror real source data verbatim, long lines included.
+"tests/*" = ["E501"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # bugbear
+    "BLE",  # blind except — deliberate ones carry noqa with a reason
+    "UP",   # pyupgrade
+]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+files = ["scripts"]
+# The indicator/context payloads are JSON-shaped dicts consumed verbatim by
+# the frontend; they are typed as dict[str, Any] on purpose.
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["scripts"]
+addopts = "-q"

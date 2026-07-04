@@ -21,17 +21,28 @@ Usage:
   python3 scripts/fetch.py --bootstrap  # also seed 10y India history
 """
 import csv
+import http.cookiejar
 import io
 import json
-import http.cookiejar
+import os
 import re
 import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from collections.abc import Callable, Iterable
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from typing import Any
+
+# A time series of (iso_date, value), ascending by date.
+Series = list[tuple[str, float]]
+# One rendered indicator card / shared fetch context. Both are JSON-shaped
+# and intentionally loose: the frontend consumes them as-is.
+Indicator = dict[str, Any]
+Ctx = dict[str, Any]
+Hist = dict[str, Series]
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
@@ -46,21 +57,23 @@ SPARK_POINTS = 120
 SPARK_YEARS = 2
 
 
-def log(msg):
+def log(msg: str) -> None:
     print(msg, flush=True)
 
 
-def http_get(url, headers=None, timeout=30, retries=2, backoff=5):
-    last = None
+def http_get(url: str, headers: dict[str, str] | None = None, timeout: int = 30,
+             retries: int = 2, backoff: int = 5) -> str:
+    last: Exception | None = None
     for attempt in range(retries + 1):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA, **(headers or {})})
             with urllib.request.urlopen(req, timeout=timeout) as r:
-                return r.read().decode("utf-8", "replace")
+                return str(r.read().decode("utf-8", "replace"))
         except Exception as e:  # noqa: BLE001 - each indicator is best-effort
             last = e
             if attempt < retries:
                 time.sleep(backoff * (attempt + 1))
+    assert last is not None
     raise last
 
 
@@ -68,13 +81,14 @@ def http_get(url, headers=None, timeout=30, retries=2, backoff=5):
 # Series helpers
 # ---------------------------------------------------------------------------
 
-def clean_pe(series, lo=1.0, hi=100.0):
+def clean_pe(series: Iterable[tuple[str, float | None]],
+             lo: float = 1.0, hi: float = 100.0) -> Series:
     """Drop junk P/E observations (earnings-collapse periods print absurd
     ratios — smallcap 250 P/E hit five digits in 2020)."""
     return [(d, v) for d, v in series if v is not None and lo < v <= hi]
 
 
-def percentile_rank(history, value):
+def percentile_rank(history: Iterable[float | None], value: float) -> int | None:
     """Percent of historical observations at or below value (0-100)."""
     vals = sorted(v for v in history if v is not None)
     if len(vals) < 20:
@@ -83,11 +97,11 @@ def percentile_rank(history, value):
     return round(100.0 * below / len(vals))
 
 
-def sparkify(series):
+def sparkify(series: Series) -> list[list[str | float]]:
     """series: list of (iso_date, value) ascending. Downsample last N years."""
     if not series:
         return []
-    cutoff = (datetime.now(timezone.utc) - timedelta(days=365 * SPARK_YEARS)).strftime("%Y-%m-%d")
+    cutoff = (datetime.now(UTC) - timedelta(days=365 * SPARK_YEARS)).strftime("%Y-%m-%d")
     recent = [p for p in series if p[0] >= cutoff] or series
     step = max(1, len(recent) // SPARK_POINTS)
     out = recent[::step]
@@ -96,7 +110,8 @@ def sparkify(series):
     return [[d, round(v, 4)] for d, v in out]
 
 
-def pct_status(pct, hi_is_froth=True, red=90, amber=75):
+def pct_status(pct: int | None, hi_is_froth: bool = True,
+               red: int = 90, amber: int = 75) -> str:
     """Map a percentile to red/amber/green. hi_is_froth=False inverts."""
     if pct is None:
         return "green"
@@ -108,7 +123,7 @@ def pct_status(pct, hi_is_froth=True, red=90, amber=75):
     return "green"
 
 
-def ordinal(n):
+def ordinal(n: int) -> str:
     if 10 <= n % 100 <= 20:
         suffix = "th"
     else:
@@ -120,21 +135,21 @@ def ordinal(n):
 # Source fetchers
 # ---------------------------------------------------------------------------
 
-def fred_csv(series_id):
+def fred_csv(series_id: str) -> Series:
     """FRED series -> list of (iso_date, float).
 
     Prefers the official API when a free FRED_API_KEY is set (reliable from
     datacenter IPs). Falls back to the keyless fredgraph CSV, which Akamai
     sometimes blocks/slows for cloud and non-US networks.
     """
-    import os
     key = os.environ.get("FRED_API_KEY", "").strip()
     if key:
         body = http_get("https://api.stlouisfed.org/fred/series/observations"
                         f"?series_id={series_id}&api_key={key}&file_type=json",
                         timeout=40, retries=2)
         obs = json.loads(body).get("observations", [])
-        out = [(o["date"], float(o["value"])) for o in obs if o.get("value") not in (".", "", None)]
+        out: Series = [(o["date"], float(o["value"]))
+                       for o in obs if o.get("value") not in (".", "", None)]
         if not out:
             raise ValueError(f"FRED API {series_id}: no observations")
         return out
@@ -143,20 +158,20 @@ def fred_csv(series_id):
                              "Accept-Language": "en-US,en;q=0.9",
                              "Referer": f"https://fred.stlouisfed.org/series/{series_id}"},
                     timeout=35, retries=1, backoff=5)
-    out = []
+    rows: Series = []
     for row in csv.reader(io.StringIO(body)):
         if len(row) != 2 or row[0] in ("DATE", "observation_date"):
             continue
         try:
-            out.append((row[0], float(row[1])))
+            rows.append((row[0], float(row[1])))
         except ValueError:
             continue
-    if not out:
+    if not rows:
         raise ValueError(f"FRED {series_id}: no rows parsed")
-    return out
+    return rows
 
 
-def spx_series():
+def spx_series() -> Series:
     """S&P 500 daily closes: Yahoo primary, FRED SP500 fallback."""
     try:
         return yahoo_chart("^GSPC", range_="10y")
@@ -167,14 +182,14 @@ def spx_series():
 _yahoo_last_call = [0.0]
 
 
-def yahoo_chart(symbol, range_="10y", interval="1d"):
+def yahoo_chart(symbol: str, range_: str = "10y", interval: str = "1d") -> Series:
     """Yahoo chart API -> list of (iso_date, close). Paced + host fallback."""
     wait = 3.0 - (time.time() - _yahoo_last_call[0])
     if wait > 0:
         time.sleep(wait)
-    err = None
+    err: Exception | None = None
     for host in ("query2", "query1"):
-        for attempt in range(2):
+        for _attempt in range(2):
             try:
                 url = (f"https://{host}.finance.yahoo.com/v8/finance/chart/"
                        f"{urllib.parse.quote(symbol)}?range={range_}&interval={interval}")
@@ -184,10 +199,11 @@ def yahoo_chart(symbol, range_="10y", interval="1d"):
                 res = j["chart"]["result"][0]
                 ts = res.get("timestamp") or []
                 closes = res["indicators"]["quote"][0].get("close") or []
-                out = []
-                for t, c in zip(ts, closes):
+                out: Series = []
+                for t, c in zip(ts, closes, strict=False):
                     if c is not None:
-                        out.append((datetime.fromtimestamp(t, timezone.utc).strftime("%Y-%m-%d"), float(c)))
+                        out.append((datetime.fromtimestamp(t, UTC).strftime("%Y-%m-%d"),
+                                    float(c)))
                 if not out:
                     raise ValueError("empty series")
                 return out
@@ -195,10 +211,11 @@ def yahoo_chart(symbol, range_="10y", interval="1d"):
                 err = e
                 _yahoo_last_call[0] = time.time()
                 time.sleep(6)
+    assert err is not None
     raise err
 
 
-def yahoo_quote_fields(symbol, fields):
+def yahoo_quote_fields(symbol: str, fields: list[str]) -> dict[str, Any]:
     """Yahoo v7 quote (needs cookie+crumb) -> dict of requested fields."""
     cj = http.cookiejar.CookieJar()
     op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
@@ -215,11 +232,11 @@ def yahoo_quote_fields(symbol, fields):
     return {f: q.get(f) for f in fields}
 
 
-def cboe_history(name):
+def cboe_history(name: str) -> Series:
     """CBOE index history CSV (VIX, VIX3M, SKEW) -> list of (iso_date, close)."""
     body = http_get(f"https://cdn.cboe.com/api/global/us_indices/daily_prices/{name}_History.csv",
                     timeout=30)
-    out = []
+    out: Series = []
     for row in csv.reader(io.StringIO(body)):
         if not row or row[0] in ("DATE", "Date") or "/" not in row[0]:
             continue
@@ -233,9 +250,9 @@ def cboe_history(name):
     return out
 
 
-def treasury_yield_curve(years):
+def treasury_yield_curve(years: Iterable[int]) -> Series:
     """US Treasury daily yield curve XML -> list of (iso_date, y10 - y2)."""
-    out = []
+    out: Series = []
     for year in years:
         url = ("https://home.treasury.gov/resource-center/data-chart-center/interest-rates/"
                f"pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value={year}")
@@ -252,7 +269,7 @@ def treasury_yield_curve(years):
     return out
 
 
-def multpl_current(slug):
+def multpl_current(slug: str) -> float:
     body = http_get(f"https://www.multpl.com/{slug}", timeout=25)
     m = re.search(r"Current [^:<]+[:\s]+([0-9]+\.[0-9]+)", body)
     if not m:
@@ -260,7 +277,7 @@ def multpl_current(slug):
     return float(m.group(1))
 
 
-def slickcharts_top10():
+def slickcharts_top10() -> float:
     body = http_get("https://www.slickcharts.com/sp500", timeout=25)
     rows = re.findall(r"<tr>(.*?)</tr>", body, re.S)
     weights = []
@@ -283,7 +300,7 @@ NSE_INDICES = {
 }
 
 
-def nse_close_all(date):
+def nse_close_all(date: datetime) -> dict[str, dict[str, float | None]]:
     """Parse one NSE ind_close_all file -> {alias: {pe, pb, dy, close}}."""
     fn = f"ind_close_all_{date.strftime('%d%m%Y')}.csv"
     body = None
@@ -299,7 +316,7 @@ def nse_close_all(date):
     header = next(reader)
     idx = {h.strip().lower(): i for i, h in enumerate(header)}
 
-    def col(row, *names):
+    def col(row: list[str], *names: str) -> float | None:
         for n in names:
             i = idx.get(n)
             if i is not None and i < len(row):
@@ -311,7 +328,7 @@ def nse_close_all(date):
                         return None
         return None
 
-    out = {}
+    out: dict[str, dict[str, float | None]] = {}
     for row in reader:
         if not row:
             continue
@@ -328,9 +345,9 @@ def nse_close_all(date):
     return out
 
 
-def nse_latest():
+def nse_latest() -> tuple[str, dict[str, dict[str, float | None]]]:
     """Walk back from today (IST) to the last published trading day file."""
-    now_ist = datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
+    now_ist = datetime.now(UTC) + timedelta(hours=5, minutes=30)
     for back in range(0, 8):
         d = now_ist - timedelta(days=back)
         try:
@@ -341,7 +358,7 @@ def nse_latest():
     raise ValueError("NSE archives: no file found in last 8 days")
 
 
-def nse_option_chain_pcr():
+def nse_option_chain_pcr() -> float:
     """NIFTY put/call OI ratio. NSE blocks many networks; best effort."""
     cj = http.cookiejar.CookieJar()
     op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
@@ -357,15 +374,15 @@ def nse_option_chain_pcr():
                    timeout=25).read().decode()
     j = json.loads(body)
     f = j["filtered"]
-    return round(f["PE"]["totOI"] / f["CE"]["totOI"], 3)
+    return round(float(f["PE"]["totOI"]) / float(f["CE"]["totOI"]), 3)
 
 
 # ---------------------------------------------------------------------------
 # Accumulated history (for sources that only expose current values)
 # ---------------------------------------------------------------------------
 
-def load_accumulated():
-    hist = {}
+def load_accumulated() -> Hist:
+    hist: Hist = {}
     if ACCUM_FILE.exists():
         for row in csv.reader(ACCUM_FILE.open()):
             if len(row) == 3:
@@ -375,7 +392,7 @@ def load_accumulated():
     return hist
 
 
-def append_accumulated(hist, key, date, value):
+def append_accumulated(hist: Hist, key: str, date: str, value: float | None) -> None:
     if value is None:
         return
     series = hist.setdefault(key, [])
@@ -385,7 +402,7 @@ def append_accumulated(hist, key, date, value):
     series.sort()
 
 
-def save_accumulated(hist):
+def save_accumulated(hist: Hist) -> None:
     HISTORY_DIR.mkdir(parents=True, exist_ok=True)
     with ACCUM_FILE.open("w", newline="") as f:
         w = csv.writer(f)
@@ -394,14 +411,14 @@ def save_accumulated(hist):
                 w.writerow([d, key, v])
 
 
-def bootstrap_india_history(hist):
+def bootstrap_india_history(hist: Hist) -> None:
     """Seed ~10y of monthly NSE index samples (one-time, run locally)."""
     log("Bootstrapping India history (monthly samples, ~10y)...")
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     month_starts = []
     y, m = now.year - 10, now.month
     while (y, m) <= (now.year, now.month):
-        month_starts.append(datetime(y, m, 1, tzinfo=timezone.utc))
+        month_starts.append(datetime(y, m, 1, tzinfo=UTC))
         m += 1
         if m > 12:
             m, y = 1, y + 1
@@ -439,10 +456,10 @@ def bootstrap_india_history(hist):
 # Indicator definitions
 # ---------------------------------------------------------------------------
 
-def build_us_panel(ctx):
+def build_us_panel(ctx: Ctx) -> dict[str, Any]:
     ind = []
 
-    def cape():
+    def cape() -> Indicator:
         v = multpl_current("shiller-pe")
         append_accumulated(ctx["accum"], "cape", ctx["today"], v)
         if v > 32:
@@ -460,7 +477,7 @@ def build_us_panel(ctx):
                     "return predictor there is; readings above ~30 have historically preceded "
                     "weak decade-ahead returns.", "multpl.com", ctx))
 
-    def buffett():
+    def buffett() -> Indicator:
         mcap = fred_csv("BOGZ1LM893064105Q")  # Z.1 corporate equities, quarterly
         gdp = fred_csv("GDP")                 # quarterly SAAR
         series = normalize_ratio(ratio_series(mcap, gdp, lambda a, b: a / b),
@@ -479,7 +496,7 @@ def build_us_panel(ctx):
                     "compare the percentile, not the headline number.",
                     "FRED Z.1 (quarterly)", ctx))
 
-    def tobin():
+    def tobin() -> Indicator:
         eq = fred_csv("NCBEILQ027S")     # corporate equities, quarterly
         nw = fred_csv("TNWMVBSNNCB")     # net worth, quarterly
         nw_map = dict(nw)
@@ -501,7 +518,7 @@ def build_us_panel(ctx):
                     "assets. Long-run mean is ~0.75; above 1 the market prices companies "
                     "above their tangible worth.", "FRED Z.1 (quarterly)", ctx))
 
-    def curve():
+    def curve() -> Indicator:
         series = treasury_yield_curve([datetime.now().year - 2,
                                        datetime.now().year - 1,
                                        datetime.now().year])
@@ -532,7 +549,7 @@ def build_us_panel(ctx):
                     "recession lead indicator — and the hit usually comes after the curve "
                     "un-inverts, not during the inversion.", "US Treasury", ctx))
 
-    def spx_m2():
+    def spx_m2() -> Indicator:
         spx = spx_series()
         m2 = fred_csv("M2SL")  # $B, monthly
         series = ratio_series(spx, m2, lambda a, b: a / b)
@@ -549,7 +566,7 @@ def build_us_panel(ctx):
                     "of 'record highs'. High percentile = stocks rich even after adjusting "
                     "for all the new money.", "Yahoo + FRED M2", ctx))
 
-    def vix():
+    def vix() -> Indicator:
         series = cboe_history("VIX")
         v = round(series[-1][1], 1)
         if v < 13:
@@ -569,7 +586,7 @@ def build_us_panel(ctx):
                     "The 'fear index'. A very LOW VIX means investors are complacent — a "
                     "classic late-bubble tell. Spikes mean fear has arrived.", "CBOE", ctx))
 
-    def hy():
+    def hy() -> Indicator:
         series = fred_csv("BAMLH0A0HYM2")
         v = round(series[-1][1], 2)
         if v < 3.0:
@@ -594,18 +611,18 @@ def build_us_panel(ctx):
                  "complacency and macro bubble measures.")
 
 
-def build_india_panel(ctx):
+def build_india_panel(ctx: Ctx) -> dict[str, Any]:
     ind = []
     nse_date, nse = ctx.get("nse_date"), ctx.get("nse")
-    hist = ctx["accum"]
+    hist: Hist = ctx["accum"]
 
-    def hist_vals(key):
+    def hist_vals(key: str) -> list[float]:
         return [v for _, v in hist.get(key, [])]
 
-    def spark_of(key):
+    def spark_of(key: str) -> list[list[str | float]]:
         return sparkify(hist.get(key, []))
 
-    def nifty_pe_fn():
+    def nifty_pe_fn() -> Indicator:
         if not nse:
             raise ValueError("NSE data unavailable")
         v = nse["nifty50"]["pe"]
@@ -627,7 +644,7 @@ def build_india_panel(ctx):
                     "post-2021 range more than the raw long-term average.",
                     "NSE indices archive", ctx))
 
-    def nifty_pb():
+    def nifty_pb() -> Indicator:
         if not nse:
             raise ValueError("NSE data unavailable")
         v = nse["nifty50"]["pb"]
@@ -641,8 +658,8 @@ def build_india_panel(ctx):
                     "change, so it's the cleaner long-run valuation gauge for Indian "
                     "large caps.", "NSE indices archive", ctx))
 
-    def premium(alias, key, label):
-        def fn():
+    def premium(alias: str, key: str, label: str) -> Callable[[], Indicator]:
+        def fn() -> Indicator:
             if not nse:
                 raise ValueError("NSE data unavailable")
             pe, base = nse[alias]["pe"], nse["nifty50"]["pe"]
@@ -674,7 +691,7 @@ def build_india_panel(ctx):
                     "historically trade at a discount — a fat premium means retail euphoria.",
                     "NSE indices archive", ctx))
 
-    def div_yield():
+    def div_yield() -> Indicator:
         if not nse:
             raise ValueError("NSE data unavailable")
         v = nse["nifty50"]["dy"]
@@ -695,11 +712,11 @@ def build_india_panel(ctx):
     return panel("india", "India", ind, subtitle)
 
 
-def build_tech_panel(ctx):
+def build_tech_panel(ctx: Ctx) -> dict[str, Any]:
     ind = []
-    hist = ctx["accum"]
+    hist: Hist = ctx["accum"]
 
-    def top10():
+    def top10() -> Indicator:
         v = slickcharts_top10()
         append_accumulated(hist, "sp500_top10", ctx["today"], v)
         if v > 35:
@@ -717,7 +734,7 @@ def build_tech_panel(ctx):
                     "is increasingly a bet on a handful of mega-cap tech names — this is "
                     "how much.", "SlickCharts", ctx))
 
-    def ndx_spx():
+    def ndx_spx() -> Indicator:
         try:
             ndx = yahoo_chart("^NDX", range_="10y")
             spx = yahoo_chart("^GSPC", range_="10y")
@@ -736,12 +753,12 @@ def build_tech_panel(ctx):
                     "this ratio collapsed 60% peak-to-trough — it is your AAPL/tech "
                     "overweight's main risk.", "Yahoo Finance", ctx))
 
-    def aapl_pe():
+    def aapl_pe() -> Indicator:
         q = yahoo_quote_fields("AAPL", ["trailingPE", "forwardPE"])
-        v = q.get("trailingPE")
-        if not v:
+        raw = q.get("trailingPE")
+        if not raw:
             raise ValueError("no trailingPE")
-        v = round(v, 1)
+        v = round(float(raw), 1)
         append_accumulated(hist, "aapl_pe", ctx["today"], v)
         if v > 33:
             st = "red"
@@ -766,12 +783,12 @@ def build_tech_panel(ctx):
                       "valuation measures.")
 
 
-def build_fno_panel(ctx):
+def build_fno_panel(ctx: Ctx) -> dict[str, Any]:
     ind = []
-    hist = ctx["accum"]
+    hist: Hist = ctx["accum"]
     nse = ctx.get("nse")
 
-    def india_vix():
+    def india_vix() -> Indicator:
         v = nse["indiavix"]["close"] if nse and nse.get("indiavix") else None
         if v is None:
             raise ValueError("India VIX unavailable")
@@ -797,7 +814,7 @@ def build_fno_panel(ctx):
                     "complacency, and violent unwinds when the regime flips.",
                     "NSE indices archive", ctx))
 
-    def pcr():
+    def pcr() -> Indicator:
         v = nse_option_chain_pcr()
         append_accumulated(hist, "nifty_pcr", ctx["today"], v)
         if v < 0.8:
@@ -817,7 +834,7 @@ def build_fno_panel(ctx):
                     "blocks many networks, so this updates best-effort.",
                     "NSE option chain", ctx))
 
-    def term_structure():
+    def term_structure() -> Indicator:
         vix = dict(cboe_history("VIX"))
         vix3m = cboe_history("VIX3M")
         series = [(d, round(vix[d] / v3, 3)) for d, v3 in vix3m if vix.get(d) and v3]
@@ -839,7 +856,7 @@ def build_fno_panel(ctx):
                     "single cleanest 'regime changed' alarm for option sellers.",
                     "CBOE", ctx))
 
-    def skew():
+    def skew() -> Indicator:
         series = cboe_history("SKEW")
         v = round(series[-1][1], 1)
         if v > 155:
@@ -870,7 +887,8 @@ def build_fno_panel(ctx):
 STATUS_LABELS = {"red": "STRETCHED", "amber": "CAUTION", "green": "NORMAL"}
 
 
-def make(id_, name, fn, explainer, source, ctx):
+def make(id_: str, name: str, fn: Callable[[], Indicator],
+         explainer: str, source: str, ctx: Ctx) -> Indicator:
     prev = ctx["previous"].get(id_)
     try:
         d = fn()
@@ -883,14 +901,14 @@ def make(id_, name, fn, explainer, source, ctx):
         log(f"  FAIL  {id_}: {type(e).__name__}: {e}")
         if prev:
             prev["stale"] = True
-            return prev
+            return dict(prev)
         return dict(id=id_, name=name, explainer=explainer, source=source,
                     value=None, unit="", status="na", statusLabel="NO DATA",
                     context="source unavailable — will fill on a future update",
                     stale=True, spark=[], updated=None)
 
 
-def normalize_ratio(series, expect_low, expect_high):
+def normalize_ratio(series: Series, expect_low: float, expect_high: float) -> Series:
     """Rescale a ratio series by 1000x if a unit mismatch (FRED returns some
     Z.1 series in millions via one endpoint and billions via another) pushed
     it outside the plausible range."""
@@ -901,11 +919,12 @@ def normalize_ratio(series, expect_low, expect_high):
     raise ValueError(f"ratio {latest} not plausible at any unit scale")
 
 
-def ratio_series(num, den, fn):
+def ratio_series(num: Series, den: Series, fn: Callable[[float, float], float]) -> Series:
     """Align two (date, value) series; den is forward-filled onto num dates."""
     den_sorted = sorted(den)
-    out = []
-    di, dval = 0, None
+    out: Series = []
+    di: int = 0
+    dval: float | None = None
     for d, v in sorted(num):
         while di < len(den_sorted) and den_sorted[di][0] <= d:
             dval = den_sorted[di][1]
@@ -917,7 +936,7 @@ def ratio_series(num, den, fn):
     return out
 
 
-def panel(id_, title, indicators, subtitle):
+def panel(id_: str, title: str, indicators: list[Indicator], subtitle: str) -> dict[str, Any]:
     counts = {"red": 0, "amber": 0, "green": 0, "na": 0}
     for i in indicators:
         counts[i["status"]] += 1
@@ -937,10 +956,10 @@ def panel(id_, title, indicators, subtitle):
                 indicators=indicators)
 
 
-def main():
+def main() -> None:
     bootstrap = "--bootstrap" in sys.argv
-    now = datetime.now(timezone.utc)
-    ctx = {
+    now = datetime.now(UTC)
+    ctx: Ctx = {
         "now_iso": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "today": now.strftime("%Y-%m-%d"),
         "previous": {},

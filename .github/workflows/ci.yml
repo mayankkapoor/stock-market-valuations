@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "data/**"   # bot data refreshes don't need the code gate
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dev tools
+        run: pip install --quiet -r requirements-dev.txt
+
+      - name: Lint (ruff)
+        run: ruff check scripts tests
+
+      - name: JS syntax (node --check)
+        run: node --check app.js
+
+      - name: Types (mypy --strict)
+        run: mypy
+
+      - name: Tests (pytest)
+        run: pytest

@@ -58,4 +58,14 @@ python3 scripts/fetch.py --bootstrap  # also seed ~10y of monthly India history
 python3 -m http.server                # open http://localhost:8000
 ```
 
+## Development
+
+```
+make setup   # one-time: .venv with pytest/ruff/mypy
+make check   # lint + strict types + tests — same gate CI enforces
+```
+
+CI (`.github/workflows/ci.yml`) runs ruff, `mypy --strict`, pytest and a JS
+syntax check on every PR; the `checks` job is required to merge.
+
 Not investment advice.
