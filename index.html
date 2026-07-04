@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bubble Detector — US · India · Tech · FnO</title>
+<meta name="description" content="Live bubble indicators for US indices, Indian markets, US tech and options positioning. No composite score — read the tape yourself.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%23f2545b' stroke-width='9'/><circle cx='50' cy='50' r='14' fill='%23f2545b'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,500;10..72,700&family=IBM+Plex+Mono:wght@400;500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-row">
+    <h1 class="wordmark">Bubble Detector</h1>
+    <div class="masthead-meta">
+      <span id="updated" class="updated mono">loading…</span>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Switch color theme">◐</button>
+    </div>
+  </div>
+  <p class="lede">Live froth gauges for the markets I actually hold — US indices, India large/mid/small,
+  US tech, and the options book. Each gauge is scored against its own history.
+  There is <em>no composite score</em>: read the tape yourself.</p>
+</header>
+
+<section class="tape-section" aria-label="All gauges at a glance">
+  <div class="tape-head mono">THE TAPE — every gauge, one strip</div>
+  <div id="tape" class="tape"></div>
+  <div class="tape-legend mono">
+    <span class="lg lg-red">▲ stretched</span>
+    <span class="lg lg-amber">◆ caution</span>
+    <span class="lg lg-green">● normal</span>
+    <span class="lg lg-na">○ no data</span>
+  </div>
+</section>
+
+<main id="panels">
+  <noscript><p class="error-block">This dashboard needs JavaScript to read <code>data/data.json</code>.</p></noscript>
+</main>
+
+<section class="method">
+  <h2 class="method-title">How to read this</h2>
+  <div class="method-cols">
+    <div>
+      <h3>Scoring</h3>
+      <p>Where a gauge has usable history, its status comes from the <strong>percentile of its own
+      past</strong> — 90th percentile or hotter is <span class="ink-red">stretched</span>, 75th–90th is
+      <span class="ink-amber">caution</span>. Where history is short (concentration, AAPL P/E) the
+      thresholds are fixed and written into each gauge's note. Regime gauges (yield curve, VIX term
+      structure) use the rules described on their cards.</p>
+    </div>
+    <div>
+      <h3>Freshness</h3>
+      <p>Data refreshes a few times per day from free public sources: FRED, US Treasury, CBOE, NSE
+      index archives, Yahoo Finance, multpl and SlickCharts. When a source is unreachable the last
+      good value is kept and the card wears a <span class="mono stale-inline">STALE</span> badge —
+      a broken API never blanks the page.</p>
+    </div>
+    <div>
+      <h3>What this is not</h3>
+      <p>Not a timing signal and not investment advice. Bubble indicators flag <em>conditions</em>,
+      not dates — markets can stay stretched for years. Inspired by
+      <a href="https://levels.io/bubble-detector">levels.io/bubble-detector</a>, rebuilt for a
+      US + India + FnO book.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer mono">
+  <span>© <span id="year"></span> · not investment advice</span>
+  <a href="https://github.com/mayankkapoor/stock-market-valuations">source &amp; methodology</a>
+</footer>
+
+<div id="tooltip" class="tooltip mono" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
