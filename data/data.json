@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-04T05:12:10Z",
+ "generated_at": "2026-07-04T09:32:10Z",
  "panels": [
   {
    "id": "us",
@@ -30,7 +30,7 @@
      "source": "multpl.com",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 335.0,
@@ -70,7 +70,7 @@
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 1.82,
@@ -109,7 +109,7 @@
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 0.35,
@@ -628,7 +628,7 @@
      "source": "US Treasury",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 0.325,
@@ -1148,7 +1148,7 @@
      "source": "Yahoo + FRED M2",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 16.1,
@@ -1683,7 +1683,7 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 2.75,
@@ -2226,7 +2226,7 @@
      "source": "FRED / ICE BofA",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     }
    ]
   },
@@ -2356,7 +2356,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 3.17,
@@ -2472,7 +2472,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 40.2,
@@ -2588,7 +2588,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 72.4,
@@ -2704,7 +2704,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 1.25,
@@ -2820,7 +2820,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     }
    ]
   },
@@ -2853,7 +2853,7 @@
      "source": "SlickCharts",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 3.919,
@@ -3373,7 +3373,7 @@
      "source": "Yahoo Finance",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 37.4,
@@ -3392,7 +3392,7 @@
      "source": "Yahoo / stockanalysis.com",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     }
    ]
   },
@@ -3522,7 +3522,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 1.066,
@@ -3541,7 +3541,7 @@
      "source": "NSE F&O bhavcopy",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 0.848,
@@ -4060,7 +4060,7 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     },
     {
      "value": 150.0,
@@ -4579,7 +4579,7 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-04T05:12:10Z"
+     "updated": "2026-07-04T09:32:10Z"
     }
    ]
   }
