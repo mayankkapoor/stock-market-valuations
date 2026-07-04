@@ -286,8 +286,15 @@ NSE_INDICES = {
 def nse_close_all(date):
     """Parse one NSE ind_close_all file -> {alias: {pe, pb, dy, close}}."""
     fn = f"ind_close_all_{date.strftime('%d%m%Y')}.csv"
-    body = http_get(f"https://nsearchives.nseindia.com/content/indices/{fn}",
-                    timeout=25, retries=0)
+    body = None
+    for host in ("nsearchives.nseindia.com", "archives.nseindia.com"):
+        try:
+            body = http_get(f"https://{host}/content/indices/{fn}", timeout=25, retries=0)
+            break
+        except Exception:  # noqa: BLE001 - try the sibling archive host
+            continue
+    if body is None:
+        raise ValueError(f"NSE archives: {fn} unavailable on both hosts")
     reader = csv.reader(io.StringIO(body))
     header = next(reader)
     idx = {h.strip().lower(): i for i, h in enumerate(header)}
@@ -454,40 +461,30 @@ def build_us_panel(ctx):
                     "weak decade-ahead returns.", "multpl.com", ctx))
 
     def buffett():
-        try:
-            mcap = [(d, v * 1.05) for d, v in yahoo_chart("^W5000", range_="10y")]
-        except Exception:  # noqa: BLE001 - Yahoo throttled; Z.1 equities ($M -> $B)
-            mcap = [(d, v / 1000.0) for d, v in fred_csv("BOGZ1LM893064105Q")]
-        try:
-            gdp = fred_csv("GDP")  # quarterly SAAR, $B
-        except Exception:  # noqa: BLE001 - FRED blocked; latest annual from World Bank
-            wb = http_get("https://api.worldbank.org/v2/country/US/indicator/"
-                          "NY.GDP.MKTP.CD?format=json&per_page=5&date=2020:2030")
-            rows = [r for r in json.loads(wb)[1] if r["value"]]
-            latest = max(rows, key=lambda r: r["date"])
-            gdp = [(f"{latest['date']}-12-31", latest["value"] / 1e9)]
-        series = ratio_series(mcap, gdp, lambda a, b: a / b * 100)
+        mcap = fred_csv("BOGZ1LM893064105Q")  # Z.1 corporate equities, quarterly
+        gdp = fred_csv("GDP")                 # quarterly SAAR
+        series = normalize_ratio(ratio_series(mcap, gdp, lambda a, b: a / b),
+                                 expect_low=0.2, expect_high=6.0)
+        series = [(d, v * 100) for d, v in series]
         v = round(series[-1][1], 0)
-        if v > 170:
-            st = "red"
-        elif v > 130:
-            st = "amber"
-        else:
-            st = "green"
-        return dict(value=v, unit="% GDP", status=st,
-                    context=f"{v:.0f}% of GDP — Buffett called 150–200% 'playing with fire'",
-                    spark=sparkify(series))
+        pct = percentile_rank([x for _, x in series], v)
+        return dict(value=v, unit="% GDP", status=pct_status(pct),
+                    context=(f"{v:.0f}% of GDP — {ordinal(pct)} percentile since the 1950s"
+                             if pct is not None else f"{v:.0f}% of GDP"),
+                    percentile=pct, spark=sparkify(series))
 
-    ind.append(make("buffett", "Buffett Indicator", buffett,
-                    "Total US equity market value (Wilshire 5000, ~$1.05B per index point) ÷ "
-                    "GDP. Buffett called it 'probably the best single measure of where "
-                    "valuations stand'.", "Yahoo ^W5000 + FRED GDP", ctx))
+    ind.append(make("buffett", "Buffett Indicator (Z.1 basis)", buffett,
+                    "All US corporate equities (Fed Z.1, includes unlisted companies) ÷ GDP, "
+                    "so it prints higher than the famous Wilshire-based 150–200% quote — "
+                    "compare the percentile, not the headline number.",
+                    "FRED Z.1 (quarterly)", ctx))
 
     def tobin():
-        eq = fred_csv("NCBEILQ027S")     # $M, quarterly
-        nw = fred_csv("TNWMVBSNNCB")     # $B, quarterly
+        eq = fred_csv("NCBEILQ027S")     # corporate equities, quarterly
+        nw = fred_csv("TNWMVBSNNCB")     # net worth, quarterly
         nw_map = dict(nw)
-        series = [(d, (v / 1000.0) / nw_map[d]) for d, v in eq if d in nw_map and nw_map[d]]
+        series = [(d, v / nw_map[d]) for d, v in eq if d in nw_map and nw_map[d]]
+        series = normalize_ratio(series, expect_low=0.15, expect_high=4.0)
         v = round(series[-1][1], 2)
         if v > 1.2:
             st = "red"
@@ -891,6 +888,17 @@ def make(id_, name, fn, explainer, source, ctx):
                     value=None, unit="", status="na", statusLabel="NO DATA",
                     context="source unavailable — will fill on a future update",
                     stale=True, spark=[], updated=None)
+
+
+def normalize_ratio(series, expect_low, expect_high):
+    """Rescale a ratio series by 1000x if a unit mismatch (FRED returns some
+    Z.1 series in millions via one endpoint and billions via another) pushed
+    it outside the plausible range."""
+    latest = series[-1][1]
+    for scale in (1, 1000, 1 / 1000):
+        if expect_low <= latest * scale <= expect_high:
+            return [(d, v * scale) for d, v in series]
+    raise ValueError(f"ratio {latest} not plausible at any unit scale")
 
 
 def ratio_series(num, den, fn):
