@@ -31,6 +31,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from collections.abc import Callable, Iterable
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -75,6 +76,12 @@ def http_get(url: str, headers: dict[str, str] | None = None, timeout: int = 30,
                 time.sleep(backoff * (attempt + 1))
     assert last is not None
     raise last
+
+
+def http_get_bytes(url: str, timeout: int = 30) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return bytes(r.read())
 
 
 # ---------------------------------------------------------------------------
@@ -358,23 +365,47 @@ def nse_latest() -> tuple[str, dict[str, dict[str, float | None]]]:
     raise ValueError("NSE archives: no file found in last 8 days")
 
 
-def nse_option_chain_pcr() -> float:
-    """NIFTY put/call OI ratio. NSE blocks many networks; best effort."""
-    cj = http.cookiejar.CookieJar()
-    op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
-    op.addheaders = [
-        ("User-Agent", UA),
-        ("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"),
-        ("Accept-Language", "en-US,en;q=0.9"),
-        ("Referer", "https://www.nseindia.com/option-chain"),
-    ]
-    op.open("https://www.nseindia.com/", timeout=20).read()
-    time.sleep(1)
-    body = op.open("https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY",
-                   timeout=25).read().decode()
-    j = json.loads(body)
-    f = j["filtered"]
-    return round(float(f["PE"]["totOI"]) / float(f["CE"]["totOI"]), 3)
+def parse_fo_pcr(csv_body: str) -> float:
+    """NIFTY put/call OI ratio (all expiries) from a UDiFF F&O bhavcopy CSV."""
+    pe = ce = 0.0
+    for row in csv.DictReader(io.StringIO(csv_body)):
+        if row.get("TckrSymb") == "NIFTY" and row.get("FinInstrmTp") == "IDO":
+            oi = float(row.get("OpnIntrst") or 0)
+            if row.get("OptnTp") == "PE":
+                pe += oi
+            elif row.get("OptnTp") == "CE":
+                ce += oi
+    if not ce:
+        raise ValueError("FO bhavcopy: no NIFTY call OI parsed")
+    return round(pe / ce, 3)
+
+
+def nse_fo_pcr() -> tuple[str, float]:
+    """Latest end-of-day NIFTY PCR from the open NSE F&O bhavcopy archive."""
+    now_ist = datetime.now(UTC) + timedelta(hours=5, minutes=30)
+    err: Exception | None = None
+    for back in range(0, 8):
+        d = now_ist - timedelta(days=back)
+        url = ("https://nsearchives.nseindia.com/content/fo/"
+               f"BhavCopy_NSE_FO_0_0_0_{d.strftime('%Y%m%d')}_F_0000.csv.zip")
+        try:
+            blob = http_get_bytes(url, timeout=40)
+            with zipfile.ZipFile(io.BytesIO(blob)) as z:
+                body = z.read(z.namelist()[0]).decode("utf-8", "replace")
+            return d.strftime("%Y-%m-%d"), parse_fo_pcr(body)
+        except Exception as e:  # noqa: BLE001 - holiday/weekend/not-yet-published
+            err = e
+            continue
+    raise ValueError(f"FO bhavcopy: none found in last 8 days (last error: {err})")
+
+
+def stockanalysis_pe(symbol: str) -> float:
+    """Trailing P/E scraped from stockanalysis.com's overview table."""
+    body = http_get(f"https://stockanalysis.com/stocks/{symbol.lower()}/", timeout=25)
+    m = re.search(r"PE Ratio</td><td[^>]*>([0-9.]+)", body)
+    if not m:
+        raise ValueError(f"stockanalysis {symbol}: PE Ratio not found")
+    return float(m.group(1))
 
 
 # ---------------------------------------------------------------------------
@@ -754,11 +785,16 @@ def build_tech_panel(ctx: Ctx) -> dict[str, Any]:
                     "overweight's main risk.", "Yahoo Finance", ctx))
 
     def aapl_pe() -> Indicator:
-        q = yahoo_quote_fields("AAPL", ["trailingPE", "forwardPE"])
-        raw = q.get("trailingPE")
-        if not raw:
-            raise ValueError("no trailingPE")
-        v = round(float(raw), 1)
+        fwd = None
+        try:
+            q = yahoo_quote_fields("AAPL", ["trailingPE", "forwardPE"])
+            raw = q.get("trailingPE")
+            if not raw:
+                raise ValueError("no trailingPE")
+            v = round(float(raw), 1)
+            fwd = q.get("forwardPE")
+        except Exception:  # noqa: BLE001 - Yahoo throttles cloud IPs
+            v = round(stockanalysis_pe("AAPL"), 1)
         append_accumulated(hist, "aapl_pe", ctx["today"], v)
         if v > 33:
             st = "red"
@@ -766,7 +802,6 @@ def build_tech_panel(ctx: Ctx) -> dict[str, Any]:
             st = "amber"
         else:
             st = "green"
-        fwd = q.get("forwardPE")
         ctx_line = f"{v}× trailing (10y median ~25×)"
         if fwd:
             ctx_line += f", {round(fwd, 1)}× forward"
@@ -776,7 +811,7 @@ def build_tech_panel(ctx: Ctx) -> dict[str, Any]:
     ind.append(make("aapl_pe", "AAPL trailing P/E", aapl_pe,
                     "Apple's price ÷ trailing earnings. Apple spent 2010–2019 in the "
                     "12–20× range; the re-rating above 25× is multiple expansion, not "
-                    "earnings growth.", "Yahoo Finance", ctx))
+                    "earnings growth.", "Yahoo / stockanalysis.com", ctx))
 
     return panel("tech", "US Tech & Concentration",
                  ind, "Your AAPL and tech-heavy exposure: concentration and relative "
@@ -815,8 +850,8 @@ def build_fno_panel(ctx: Ctx) -> dict[str, Any]:
                     "NSE indices archive", ctx))
 
     def pcr() -> Indicator:
-        v = nse_option_chain_pcr()
-        append_accumulated(hist, "nifty_pcr", ctx["today"], v)
+        pcr_date, v = nse_fo_pcr()
+        append_accumulated(hist, "nifty_pcr", pcr_date, v)
         if v < 0.8:
             st, note = "red", "call-heavy — euphoric positioning"
         elif v < 1.0:
@@ -825,14 +860,15 @@ def build_fno_panel(ctx: Ctx) -> dict[str, Any]:
             st, note = "green", "balanced"
         else:
             st, note = "amber", "put-heavy — crowded hedging/fear"
-        return dict(value=v, unit="", status=st, context=f"{v} — {note}",
+        return dict(value=v, unit="", status=st,
+                    context=f"{v} — {note} (EOD {pcr_date})",
                     spark=sparkify(hist.get("nifty_pcr", [])))
 
     ind.append(make("pcr", "NIFTY put/call ratio (OI)", pcr,
-                    "Open-interest puts ÷ calls across the NIFTY option chain. Very low = "
-                    "everyone is long calls (euphoria); very high = crowded hedging. NSE "
-                    "blocks many networks, so this updates best-effort.",
-                    "NSE option chain", ctx))
+                    "Open-interest puts ÷ calls across all NIFTY option expiries, from "
+                    "the end-of-day F&O bhavcopy. Very low = everyone is long calls "
+                    "(euphoria); very high = crowded hedging.",
+                    "NSE F&O bhavcopy", ctx))
 
     def term_structure() -> Indicator:
         vix = dict(cboe_history("VIX"))

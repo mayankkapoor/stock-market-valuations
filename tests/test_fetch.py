@@ -339,3 +339,62 @@ class TestAccumulated:
     def test_load_missing_file_is_empty(self, tmp_path, monkeypatch):
         monkeypatch.setattr(fetch, "ACCUM_FILE", tmp_path / "nope.csv")
         assert fetch.load_accumulated() == {}
+
+
+# ---------------------------------------------------------------------------
+# New-source parsers: F&O bhavcopy PCR + stockanalysis P/E
+# ---------------------------------------------------------------------------
+
+FO_BHAV_CSV = """\
+TradDt,BizDt,Sgmt,Src,FinInstrmTp,FinInstrmId,ISIN,TckrSymb,SctySrs,XpryDt,FininstrmActlXpryDt,StrkPric,OptnTp,FinInstrmNm,OpnPric,HghPric,LwPric,ClsPric,LastPric,PrvsClsgPric,UndrlygPric,SttlmPric,OpnIntrst,ChngInOpnIntrst,TtlTradgVol,TtlTrfVal,TtlNbOfTxsExctd,SsnId,NewBrdLotQty,Rmks,Rsvd1,Rsvd2,Rsvd3,Rsvd4
+2026-07-03,2026-07-03,FO,NSE,IDO,1,,NIFTY,,2026-07-09,2026-07-09,24000,PE,X,1,1,1,1,1,1,1,1,600,0,1,1,1,F1,75,,,,,
+2026-07-03,2026-07-03,FO,NSE,IDO,2,,NIFTY,,2026-07-09,2026-07-09,24000,CE,X,1,1,1,1,1,1,1,1,400,0,1,1,1,F1,75,,,,,
+2026-07-03,2026-07-03,FO,NSE,IDO,3,,NIFTY,,2026-07-30,2026-07-30,25000,PE,X,1,1,1,1,1,1,1,1,466,0,1,1,1,F1,75,,,,,
+2026-07-03,2026-07-03,FO,NSE,IDO,4,,BANKNIFTY,,2026-07-30,2026-07-30,52000,PE,X,1,1,1,1,1,1,1,1,9999,0,1,1,1,F1,35,,,,,
+2026-07-03,2026-07-03,FO,NSE,STO,5,,NIFTY,,2026-07-30,2026-07-30,0,PE,X,1,1,1,1,1,1,1,1,7777,0,1,1,1,F1,75,,,,,
+2026-07-03,2026-07-03,FO,NSE,IDF,6,,NIFTY,,2026-07-30,2026-07-30,,,X,1,1,1,1,1,1,1,1,8888,0,1,1,1,F1,75,,,,,
+"""
+
+SA_HTML = '<tr><td>PE Ratio</td><td class="whitespace-nowrap px-0.5">37.41</td></tr>'
+
+
+class TestFoPcr:
+    def test_sums_only_nifty_index_options(self):
+        # (600 + 466) puts / 400 calls; BANKNIFTY, stock options, futures ignored.
+        assert fetch.parse_fo_pcr(FO_BHAV_CSV) == round(1066 / 400, 3)
+
+    def test_no_calls_raises(self):
+        header = FO_BHAV_CSV.splitlines()[0]
+        with pytest.raises(ValueError):
+            fetch.parse_fo_pcr(header + "\n")
+
+    def test_nse_fo_pcr_unzips_and_walks_back(self, monkeypatch):
+        import io as _io
+        import zipfile as _zipfile
+        calls = []
+
+        def fake_bytes(url, timeout=30):
+            calls.append(url)
+            if len(calls) == 1:
+                raise OSError("404 not published yet")
+            buf = _io.BytesIO()
+            with _zipfile.ZipFile(buf, "w") as z:
+                z.writestr("bhav.csv", FO_BHAV_CSV)
+            return buf.getvalue()
+
+        monkeypatch.setattr(fetch, "http_get_bytes", fake_bytes)
+        date, pcr = fetch.nse_fo_pcr()
+        assert pcr == round(1066 / 400, 3)
+        assert len(calls) == 2  # first day failed, walked back one day
+        assert date.replace("-", "") == calls[1].split("_F_")[0][-8:]
+
+
+class TestStockanalysisPe:
+    def test_parses_pe(self, monkeypatch):
+        monkeypatch.setattr(fetch, "http_get", lambda url, **kw: SA_HTML)
+        assert fetch.stockanalysis_pe("AAPL") == 37.41
+
+    def test_missing_pe_raises(self, monkeypatch):
+        monkeypatch.setattr(fetch, "http_get", lambda url, **kw: "<html></html>")
+        with pytest.raises(ValueError):
+            fetch.stockanalysis_pe("AAPL")
