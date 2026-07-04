@@ -142,7 +142,7 @@ def fred_csv(series_id):
                     headers={"Accept": "text/csv,*/*;q=0.8",
                              "Accept-Language": "en-US,en;q=0.9",
                              "Referer": f"https://fred.stlouisfed.org/series/{series_id}"},
-                    timeout=55, retries=2, backoff=8)
+                    timeout=35, retries=1, backoff=5)
     out = []
     for row in csv.reader(io.StringIO(body)):
         if len(row) != 2 or row[0] in ("DATE", "observation_date"):
@@ -174,7 +174,7 @@ def yahoo_chart(symbol, range_="10y", interval="1d"):
         time.sleep(wait)
     err = None
     for host in ("query2", "query1"):
-        for attempt in range(3):
+        for attempt in range(2):
             try:
                 url = (f"https://{host}.finance.yahoo.com/v8/finance/chart/"
                        f"{urllib.parse.quote(symbol)}?range={range_}&interval={interval}")
@@ -194,7 +194,7 @@ def yahoo_chart(symbol, range_="10y", interval="1d"):
             except Exception as e:  # noqa: BLE001
                 err = e
                 _yahoo_last_call[0] = time.time()
-                time.sleep(8 * (attempt + 1))
+                time.sleep(6)
     raise err
 
 
