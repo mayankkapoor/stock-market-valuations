@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-28T04:30:39Z",
+ "generated_at": "2026-07-29T04:33:56Z",
  "panels": [
   {
    "id": "us",
@@ -14,10 +14,10 @@
    },
    "indicators": [
     {
-     "value": 40.47,
+     "value": 40.57,
      "unit": "\u00d7",
      "status": "red",
-     "context": "40.47\u00d7 vs ~17 long-term average",
+     "context": "40.57\u00d7 vs ~17 long-term average",
      "spark": [
       [
        "2026-07-04",
@@ -118,6 +118,10 @@
       [
        "2026-07-28",
        40.47
+      ],
+      [
+       "2026-07-29",
+       40.57
       ]
      ],
      "id": "cape",
@@ -126,7 +130,7 @@
      "source": "multpl.com",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
      "value": 335.0,
@@ -166,7 +170,7 @@
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
      "value": 1.82,
@@ -205,13 +209,13 @@
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 0.34,
+     "value": 0.35,
      "unit": "pp",
      "status": "amber",
-     "context": "+0.34pp spread \u2014 un-inverted ~23 months ago; recessions historically strike 6\u201324 months AFTER un-inversion",
+     "context": "+0.35pp spread \u2014 un-inverted ~23 months ago; recessions historically strike 6\u201324 months AFTER un-inversion",
      "spark": [
       [
        "2024-07-29",
@@ -714,8 +718,8 @@
        0.36
       ],
       [
-       "2026-07-27",
-       0.34
+       "2026-07-28",
+       0.35
       ]
      ],
      "id": "yieldcurve",
@@ -724,14 +728,14 @@
      "source": "US Treasury",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 0.322,
+     "value": 0.321,
      "unit": "",
      "status": "red",
-     "context": "99th percentile of its 10-year range",
-     "percentile": 99,
+     "context": "98th percentile of its 10-year range",
+     "percentile": 98,
      "spark": [
       [
        "2024-07-29",
@@ -739,35 +743,35 @@
       ],
       [
        "2024-08-02",
-       0.2524
+       0.2523
       ],
       [
        "2024-08-08",
-       0.2511
+       0.251
       ],
       [
        "2024-08-14",
-       0.2575
+       0.2574
       ],
       [
        "2024-08-20",
-       0.2642
+       0.2641
       ],
       [
        "2024-08-26",
-       0.2651
+       0.265
       ],
       [
        "2024-08-30",
-       0.2666
+       0.2665
       ],
       [
        "2024-09-06",
-       0.2543
+       0.2542
       ],
       [
        "2024-09-12",
-       0.2631
+       0.263
       ],
       [
        "2024-09-18",
@@ -783,23 +787,23 @@
       ],
       [
        "2024-10-04",
-       0.2696
+       0.2695
       ],
       [
        "2024-10-10",
-       0.271
+       0.2709
       ],
       [
        "2024-10-16",
-       0.2739
+       0.2738
       ],
       [
        "2024-10-22",
-       0.2743
+       0.2742
       ],
       [
        "2024-10-28",
-       0.273
+       0.2729
       ],
       [
        "2024-11-01",
@@ -827,7 +831,7 @@
       ],
       [
        "2024-12-06",
-       0.2835
+       0.2834
       ],
       [
        "2024-12-12",
@@ -847,71 +851,71 @@
       ],
       [
        "2025-01-07",
-       0.2742
+       0.2743
       ],
       [
        "2025-01-14",
-       0.2712
+       0.2713
       ],
       [
        "2025-01-21",
-       0.2807
+       0.2808
       ],
       [
        "2025-01-27",
-       0.279
+       0.2791
       ],
       [
        "2025-01-31",
-       0.2803
+       0.2804
       ],
       [
        "2025-02-06",
-       0.2815
+       0.2816
       ],
       [
        "2025-02-12",
-       0.28
+       0.2801
       ],
       [
        "2025-02-19",
-       0.2843
+       0.2844
       ],
       [
        "2025-02-25",
-       0.2755
+       0.2756
       ],
       [
        "2025-03-03",
-       0.2697
+       0.2698
       ],
       [
        "2025-03-07",
-       0.266
+       0.2661
       ],
       [
        "2025-03-13",
-       0.2545
+       0.2546
       ],
       [
        "2025-03-19",
-       0.2616
+       0.2617
       ],
       [
        "2025-03-25",
-       0.2663
+       0.2664
       ],
       [
        "2025-03-31",
-       0.2587
+       0.2588
       ],
       [
        "2025-04-04",
-       0.233
+       0.2331
       ],
       [
        "2025-04-10",
-       0.2419
+       0.242
       ],
       [
        "2025-04-16",
@@ -951,7 +955,7 @@
       ],
       [
        "2025-06-09",
-       0.2738
+       0.2737
       ],
       [
        "2025-06-13",
@@ -967,7 +971,7 @@
       ],
       [
        "2025-07-02",
-       0.2828
+       0.2827
       ],
       [
        "2025-07-09",
@@ -979,7 +983,7 @@
       ],
       [
        "2025-07-21",
-       0.2864
+       0.2863
       ],
       [
        "2025-07-25",
@@ -987,11 +991,11 @@
       ],
       [
        "2025-07-31",
-       0.2879
+       0.2878
       ],
       [
        "2025-08-06",
-       0.2873
+       0.2872
       ],
       [
        "2025-08-12",
@@ -999,19 +1003,19 @@
       ],
       [
        "2025-08-18",
-       0.292
+       0.2919
       ],
       [
        "2025-08-22",
-       0.2928
+       0.2927
       ],
       [
        "2025-08-28",
-       0.2944
+       0.2943
       ],
       [
        "2025-09-04",
-       0.2933
+       0.2932
       ],
       [
        "2025-09-10",
@@ -1019,43 +1023,43 @@
       ],
       [
        "2025-09-16",
-       0.298
+       0.2979
       ],
       [
        "2025-09-22",
-       0.3019
+       0.3018
       ],
       [
        "2025-09-26",
-       0.2997
+       0.2996
       ],
       [
        "2025-10-02",
-       0.3019
+       0.3018
       ],
       [
        "2025-10-08",
-       0.3036
+       0.3035
       ],
       [
        "2025-10-14",
-       0.2987
+       0.2986
       ],
       [
        "2025-10-20",
-       0.3028
+       0.3027
       ],
       [
        "2025-10-24",
-       0.3053
+       0.3052
       ],
       [
        "2025-10-30",
-       0.3067
+       0.3066
       ],
       [
        "2025-11-05",
-       0.3051
+       0.305
       ],
       [
        "2025-11-11",
@@ -1075,7 +1079,7 @@
       ],
       [
        "2025-12-04",
-       0.3068
+       0.3067
       ],
       [
        "2025-12-10",
@@ -1095,87 +1099,87 @@
       ],
       [
        "2026-01-05",
-       0.3077
+       0.3079
       ],
       [
        "2026-01-09",
-       0.3106
+       0.3107
       ],
       [
        "2026-01-15",
-       0.3096
+       0.3097
       ],
       [
        "2026-01-22",
-       0.3082
+       0.3084
       ],
       [
        "2026-01-28",
-       0.3111
+       0.3112
       ],
       [
        "2026-02-03",
-       0.3057
+       0.3058
       ],
       [
        "2026-02-09",
-       0.3078
+       0.3079
       ],
       [
        "2026-02-13",
-       0.3021
+       0.3022
       ],
       [
        "2026-02-20",
-       0.3054
-      ],
-      [
-       "2026-02-26",
-       0.3053
-      ],
-      [
-       "2026-03-04",
-       0.3028
-      ],
-      [
-       "2026-03-10",
-       0.2989
-      ],
-      [
-       "2026-03-16",
-       0.2953
-      ],
-      [
-       "2026-03-20",
-       0.2868
-      ],
-      [
-       "2026-03-26",
-       0.2855
-      ],
-      [
-       "2026-04-01",
-       0.2883
-      ],
-      [
-       "2026-04-08",
-       0.2974
-      ],
-      [
-       "2026-04-14",
        0.3055
       ],
       [
+       "2026-02-26",
+       0.3054
+      ],
+      [
+       "2026-03-04",
+       0.3029
+      ],
+      [
+       "2026-03-10",
+       0.2991
+      ],
+      [
+       "2026-03-16",
+       0.2954
+      ],
+      [
+       "2026-03-20",
+       0.2869
+      ],
+      [
+       "2026-03-26",
+       0.2856
+      ],
+      [
+       "2026-04-01",
+       0.2884
+      ],
+      [
+       "2026-04-08",
+       0.2975
+      ],
+      [
+       "2026-04-14",
+       0.3056
+      ],
+      [
        "2026-04-20",
-       0.3117
+       0.3118
       ],
       [
        "2026-04-24",
-       0.3142
+       0.3143
       ],
       [
        "2026-04-30",
-       0.3161
+       0.3162
       ],
       [
        "2026-05-06",
@@ -1183,7 +1187,7 @@
       ],
       [
        "2026-05-12",
-       0.3211
+       0.321
       ],
       [
        "2026-05-18",
@@ -1191,7 +1195,7 @@
       ],
       [
        "2026-05-22",
-       0.3242
+       0.3241
       ],
       [
        "2026-05-29",
@@ -1199,43 +1203,43 @@
       ],
       [
        "2026-06-04",
-       0.329
+       0.3275
       ],
       [
        "2026-06-10",
-       0.3152
+       0.3138
       ],
       [
        "2026-06-16",
-       0.3258
+       0.3244
       ],
       [
        "2026-06-23",
-       0.3195
+       0.3181
       ],
       [
        "2026-06-29",
-       0.3228
+       0.3213
       ],
       [
        "2026-07-06",
-       0.327
+       0.3255
       ],
       [
        "2026-07-10",
-       0.3286
+       0.3272
       ],
       [
        "2026-07-16",
-       0.3268
+       0.3254
       ],
       [
        "2026-07-22",
-       0.3253
+       0.3239
       ],
       [
-       "2026-07-27",
-       0.3216
+       "2026-07-28",
+       0.3208
       ]
      ],
      "id": "spxm2",
@@ -1244,13 +1248,13 @@
      "source": "Yahoo + FRED M2",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 18.7,
+     "value": 18.2,
      "unit": "",
      "status": "green",
-     "context": "18.7 \u2014 normal volatility regime",
+     "context": "18.2 \u2014 normal volatility regime",
      "spark": [
       [
        "2024-07-29",
@@ -1769,8 +1773,8 @@
        18.7
       ],
       [
-       "2026-07-27",
-       18.67
+       "2026-07-28",
+       18.21
       ]
      ],
      "id": "vix",
@@ -1779,13 +1783,13 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 2.79,
+     "value": 2.81,
      "unit": "pp",
      "status": "red",
-     "context": "2.79pp over Treasuries \u2014 spreads extremely tight \u2014 lenders pricing in near-zero risk",
+     "context": "2.81pp over Treasuries \u2014 spreads extremely tight \u2014 lenders pricing in near-zero risk",
      "spark": [
       [
        "2024-07-29",
@@ -2312,8 +2316,8 @@
        2.68
       ],
       [
-       "2026-07-24",
-       2.79
+       "2026-07-27",
+       2.81
       ]
      ],
      "id": "hyspread",
@@ -2322,14 +2326,14 @@
      "source": "FRED / ICE BofA",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     }
    ]
   },
   {
    "id": "india",
    "title": "India",
-   "subtitle": "Nifty large/mid/small valuation vs their own 10-year history. NSE data as of 2026-07-27.",
+   "subtitle": "Nifty large/mid/small valuation vs their own 10-year history. NSE data as of 2026-07-28.",
    "summary": {
     "red": 0,
     "amber": 0,
@@ -2339,11 +2343,11 @@
    },
    "indicators": [
     {
-     "value": 20.52,
+     "value": 20.46,
      "unit": "\u00d7",
      "status": "green",
-     "context": "20.52\u00d7 \u2014 15th percentile since the 2021 EPS-methodology change",
-     "percentile": 15,
+     "context": "20.46\u00d7 \u2014 12th percentile since the 2021 EPS-methodology change",
+     "percentile": 12,
      "spark": [
       [
        "2024-08-01",
@@ -2508,6 +2512,10 @@
       [
        "2026-07-27",
        20.52
+      ],
+      [
+       "2026-07-28",
+       20.46
       ]
      ],
      "id": "nifty_pe",
@@ -2516,14 +2524,14 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
      "value": 2.95,
      "unit": "\u00d7",
      "status": "green",
-     "context": "2.95\u00d7 \u2014 3rd percentile of 10-year range",
-     "percentile": 3,
+     "context": "2.95\u00d7 \u2014 4th percentile of 10-year range",
+     "percentile": 4,
      "spark": [
       [
        "2024-08-01",
@@ -2688,6 +2696,10 @@
       [
        "2026-07-27",
        2.95
+      ],
+      [
+       "2026-07-28",
+       2.95
       ]
      ],
      "id": "nifty_pb",
@@ -2696,14 +2708,14 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 48.5,
+     "value": 47.2,
      "unit": "%",
      "status": "green",
-     "context": "Midcap P/E 30.47\u00d7 vs Nifty 20.52\u00d7 (+48%) \u2014 59th percentile",
-     "percentile": 59,
+     "context": "Midcap P/E 30.12\u00d7 vs Nifty 20.46\u00d7 (+47%) \u2014 57th percentile",
+     "percentile": 57,
      "spark": [
       [
        "2024-08-01",
@@ -2868,6 +2880,10 @@
       [
        "2026-07-27",
        48.4893
+      ],
+      [
+       "2026-07-28",
+       47.2141
       ]
      ],
      "id": "midcap_prem",
@@ -2876,13 +2892,13 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 68.3,
+     "value": 66.4,
      "unit": "%",
      "status": "green",
-     "context": "Smallcap P/E 34.54\u00d7 vs Nifty 20.52\u00d7 (+68%) \u2014 66th percentile",
+     "context": "Smallcap P/E 34.04\u00d7 vs Nifty 20.46\u00d7 (+66%) \u2014 66th percentile",
      "percentile": 66,
      "spark": [
       [
@@ -3048,6 +3064,10 @@
       [
        "2026-07-27",
        68.3236
+      ],
+      [
+       "2026-07-28",
+       66.3734
       ]
      ],
      "id": "smallcap_prem",
@@ -3056,14 +3076,14 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 1.23,
+     "value": 1.22,
      "unit": "%",
      "status": "green",
-     "context": "1.23% \u2014 44th percentile (low yield = expensive)",
-     "percentile": 44,
+     "context": "1.22% \u2014 37th percentile (low yield = expensive)",
+     "percentile": 37,
      "spark": [
       [
        "2024-08-01",
@@ -3228,6 +3248,10 @@
       [
        "2026-07-27",
        1.23
+      ],
+      [
+       "2026-07-28",
+       1.22
       ]
      ],
      "id": "nifty_dy",
@@ -3236,7 +3260,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     }
    ]
   },
@@ -3253,10 +3277,10 @@
    },
    "indicators": [
     {
-     "value": 36.69,
+     "value": 36.86,
      "unit": "%",
      "status": "red",
-     "context": "36.69% of the index in 10 stocks \u2014 dot-com peak was ~27%",
+     "context": "36.86% of the index in 10 stocks \u2014 dot-com peak was ~27%",
      "spark": [
       [
        "2026-07-04",
@@ -3357,6 +3381,10 @@
       [
        "2026-07-28",
        36.69
+      ],
+      [
+       "2026-07-29",
+       36.86
       ]
      ],
      "id": "top10",
@@ -3365,10 +3393,10 @@
      "source": "SlickCharts",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 3.782,
+     "value": 3.737,
      "unit": "",
      "status": "red",
      "context": "97th percentile of 10-year range",
@@ -3875,8 +3903,8 @@
        3.8669
       ],
       [
-       "2026-07-27",
-       3.7823
+       "2026-07-28",
+       3.7372
       ]
      ],
      "id": "ndxspx",
@@ -3885,13 +3913,13 @@
      "source": "Yahoo Finance",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 40.8,
+     "value": 41.2,
      "unit": "\u00d7",
      "status": "red",
-     "context": "40.8\u00d7 trailing (10y median ~25\u00d7)",
+     "context": "41.2\u00d7 trailing (10y median ~25\u00d7)",
      "spark": [
       [
        "2026-07-04",
@@ -3992,6 +4020,10 @@
       [
        "2026-07-28",
        40.8
+      ],
+      [
+       "2026-07-29",
+       41.2
       ]
      ],
      "id": "aapl_pe",
@@ -4000,7 +4032,7 @@
      "source": "Yahoo / stockanalysis.com",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     }
    ]
   },
@@ -4010,18 +4042,18 @@
    "subtitle": "What the options market is pricing \u2014 complacency, positioning and regime signals for FnO.",
    "summary": {
     "red": 0,
-    "amber": 2,
-    "green": 2,
+    "amber": 3,
+    "green": 1,
     "na": 0,
     "verdict": "Mixed signals: froth building, watch closely"
    },
    "indicators": [
     {
-     "value": 12.7,
+     "value": 12.6,
      "unit": "",
      "status": "amber",
-     "context": "12.7 \u2014 low \u2014 market pricing in calm (25th percentile of 10y)",
-     "percentile": 25,
+     "context": "12.6 \u2014 low \u2014 market pricing in calm (24th percentile of 10y)",
+     "percentile": 24,
      "spark": [
       [
        "2024-08-01",
@@ -4186,6 +4218,10 @@
       [
        "2026-07-27",
        12.66
+      ],
+      [
+       "2026-07-28",
+       12.56
       ]
      ],
      "id": "indiavix",
@@ -4194,13 +4230,13 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 1.106,
+     "value": 0.99,
      "unit": "",
-     "status": "green",
-     "context": "1.106 \u2014 balanced (EOD 2026-07-27)",
+     "status": "amber",
+     "context": "0.99 \u2014 leaning bullish (EOD 2026-07-28)",
      "spark": [
       [
        "2026-07-03",
@@ -4269,6 +4305,10 @@
       [
        "2026-07-27",
        1.106
+      ],
+      [
+       "2026-07-28",
+       0.99
       ]
      ],
      "id": "pcr",
@@ -4276,14 +4316,14 @@
      "explainer": "Open-interest puts \u00f7 calls across all NIFTY option expiries, from the end-of-day F&O bhavcopy. Very low = everyone is long calls (euphoria); very high = crowded hedging.",
      "source": "NSE F&O bhavcopy",
      "stale": false,
-     "statusLabel": "NORMAL",
-     "updated": "2026-07-28T04:30:39Z"
+     "statusLabel": "CAUTION",
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 0.924,
+     "value": 0.917,
      "unit": "",
      "status": "green",
-     "context": "0.924 \u2014 normal term structure",
+     "context": "0.917 \u2014 normal term structure",
      "spark": [
       [
        "2024-07-29",
@@ -4786,8 +4826,8 @@
        0.852
       ],
       [
-       "2026-07-27",
-       0.924
+       "2026-07-28",
+       0.917
       ]
      ],
      "id": "vixterm",
@@ -4796,13 +4836,13 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     },
     {
-     "value": 146.6,
+     "value": 143.0,
      "unit": "",
      "status": "amber",
-     "context": "146.6 \u2014 elevated demand for crash hedges",
+     "context": "143.0 \u2014 elevated demand for crash hedges",
      "spark": [
       [
        "2024-07-29",
@@ -5305,8 +5345,8 @@
        145.95
       ],
       [
-       "2026-07-27",
-       146.6
+       "2026-07-28",
+       142.98
       ]
      ],
      "id": "skew",
@@ -5315,7 +5355,7 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-07-28T04:30:39Z"
+     "updated": "2026-07-29T04:33:56Z"
     }
    ]
   }
