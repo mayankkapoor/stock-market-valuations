@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-21T06:28:10Z",
+ "generated_at": "2026-09-22T06:19:38Z",
  "panels": [
   {
    "id": "us",
@@ -14,10 +14,10 @@
    },
    "indicators": [
     {
-     "value": 40.94,
+     "value": 41.6,
      "unit": "\u00d7",
      "status": "red",
-     "context": "40.94\u00d7 vs ~17 long-term average",
+     "context": "41.6\u00d7 vs ~17 long-term average",
      "spark": [
       [
        "2026-07-04",
@@ -338,6 +338,10 @@
       [
        "2026-09-21",
        40.94
+      ],
+      [
+       "2026-09-22",
+       41.6
       ]
      ],
      "id": "cape",
@@ -346,7 +350,7 @@
      "source": "multpl.com",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
      "value": 381.0,
@@ -390,7 +394,7 @@
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
      "value": 2.12,
@@ -433,13 +437,13 @@
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 0.25,
+     "value": 0.2,
      "unit": "pp",
      "status": "green",
-     "context": "+0.25pp spread \u2014 normal upward slope",
+     "context": "+0.20pp spread \u2014 normal upward slope",
      "spark": [
       [
        "2024-09-23",
@@ -940,6 +944,10 @@
       [
        "2026-09-18",
        0.25
+      ],
+      [
+       "2026-09-21",
+       0.2
       ]
      ],
      "id": "yieldcurve",
@@ -948,14 +956,14 @@
      "source": "US Treasury",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 0.329,
+     "value": 0.334,
      "unit": "",
      "status": "red",
-     "context": "99th percentile of its 10-year range",
-     "percentile": 99,
+     "context": "100th percentile of its 10-year range",
+     "percentile": 100,
      "spark": [
       [
        "2024-09-23",
@@ -1458,8 +1466,8 @@
        0.3253
       ],
       [
-       "2026-09-17",
-       0.329
+       "2026-09-21",
+       0.3344
       ]
      ],
      "id": "spxm2",
@@ -1468,13 +1476,13 @@
      "source": "Yahoo + FRED M2",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 14.8,
+     "value": 14.9,
      "unit": "",
      "status": "amber",
-     "context": "14.8 \u2014 low volatility, market pricing in calm",
+     "context": "14.9 \u2014 low volatility, market pricing in calm",
      "spark": [
       [
        "2024-09-23",
@@ -1993,8 +2001,8 @@
        15.44
       ],
       [
-       "2026-09-18",
-       14.81
+       "2026-09-21",
+       14.87
       ]
      ],
      "id": "vix",
@@ -2003,13 +2011,13 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 2.7,
+     "value": 2.68,
      "unit": "pp",
      "status": "red",
-     "context": "2.7pp over Treasuries \u2014 spreads extremely tight \u2014 lenders pricing in near-zero risk",
+     "context": "2.68pp over Treasuries \u2014 spreads extremely tight \u2014 lenders pricing in near-zero risk",
      "spark": [
       [
        "2024-09-23",
@@ -2534,6 +2542,10 @@
       [
        "2026-09-17",
        2.7
+      ],
+      [
+       "2026-09-18",
+       2.68
       ]
      ],
      "id": "hyspread",
@@ -2542,14 +2554,14 @@
      "source": "FRED / ICE BofA",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     }
    ]
   },
   {
    "id": "india",
    "title": "India",
-   "subtitle": "Nifty large/mid/small valuation vs their own 10-year history. NSE data as of 2026-09-18.",
+   "subtitle": "Nifty large/mid/small valuation vs their own 10-year history. NSE data as of 2026-09-21.",
    "summary": {
     "red": 0,
     "amber": 0,
@@ -2559,11 +2571,11 @@
    },
    "indicators": [
     {
-     "value": 19.74,
+     "value": 19.79,
      "unit": "\u00d7",
      "status": "green",
-     "context": "19.74\u00d7 \u2014 5th percentile since the 2021 EPS-methodology change",
-     "percentile": 5,
+     "context": "19.79\u00d7 \u2014 7th percentile since the 2021 EPS-methodology change",
+     "percentile": 7,
      "spark": [
       [
        "2024-10-01",
@@ -2868,6 +2880,10 @@
       [
        "2026-09-18",
        19.74
+      ],
+      [
+       "2026-09-21",
+       19.79
       ]
      ],
      "id": "nifty_pe",
@@ -2876,14 +2892,14 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 2.82,
+     "value": 2.83,
      "unit": "\u00d7",
      "status": "green",
-     "context": "2.82\u00d7 \u2014 4th percentile of 10-year range",
-     "percentile": 4,
+     "context": "2.83\u00d7 \u2014 6th percentile of 10-year range",
+     "percentile": 6,
      "spark": [
       [
        "2024-10-01",
@@ -3188,6 +3204,10 @@
       [
        "2026-09-18",
        2.82
+      ],
+      [
+       "2026-09-21",
+       2.83
       ]
      ],
      "id": "nifty_pb",
@@ -3196,14 +3216,14 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 45.1,
+     "value": 44.2,
      "unit": "%",
      "status": "green",
-     "context": "Midcap P/E 28.64\u00d7 vs Nifty 19.74\u00d7 (+45%) \u2014 52nd percentile",
-     "percentile": 52,
+     "context": "Midcap P/E 28.53\u00d7 vs Nifty 19.79\u00d7 (+44%) \u2014 48th percentile",
+     "percentile": 48,
      "spark": [
       [
        "2024-10-01",
@@ -3508,6 +3528,10 @@
       [
        "2026-09-18",
        45.0861
+      ],
+      [
+       "2026-09-21",
+       44.1637
       ]
      ],
      "id": "midcap_prem",
@@ -3516,14 +3540,14 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 70.9,
+     "value": 70.4,
      "unit": "%",
      "status": "green",
-     "context": "Smallcap P/E 33.74\u00d7 vs Nifty 19.74\u00d7 (+71%) \u2014 73rd percentile",
-     "percentile": 73,
+     "context": "Smallcap P/E 33.73\u00d7 vs Nifty 19.79\u00d7 (+70%) \u2014 72nd percentile",
+     "percentile": 72,
      "spark": [
       [
        "2024-10-01",
@@ -3828,6 +3852,10 @@
       [
        "2026-09-18",
        70.922
+      ],
+      [
+       "2026-09-21",
+       70.4396
       ]
      ],
      "id": "smallcap_prem",
@@ -3836,7 +3864,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
      "value": 1.21,
@@ -4148,6 +4176,10 @@
       [
        "2026-09-18",
        1.21
+      ],
+      [
+       "2026-09-21",
+       1.21
       ]
      ],
      "id": "nifty_dy",
@@ -4156,7 +4188,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     }
    ]
   },
@@ -4173,10 +4205,10 @@
    },
    "indicators": [
     {
-     "value": 38.69,
+     "value": 39.03,
      "unit": "%",
      "status": "red",
-     "context": "38.69% of the index in 10 stocks \u2014 dot-com peak was ~27%",
+     "context": "39.03% of the index in 10 stocks \u2014 dot-com peak was ~27%",
      "spark": [
       [
        "2026-07-04",
@@ -4497,6 +4529,10 @@
       [
        "2026-09-21",
        38.69
+      ],
+      [
+       "2026-09-22",
+       39.03
       ]
      ],
      "id": "top10",
@@ -4505,14 +4541,14 @@
      "source": "SlickCharts",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 3.881,
+     "value": 3.926,
      "unit": "",
      "status": "red",
-     "context": "98th percentile of 10-year range",
-     "percentile": 98,
+     "context": "99th percentile of 10-year range",
+     "percentile": 99,
      "spark": [
       [
        "2024-09-23",
@@ -5015,8 +5051,8 @@
        3.8329
       ],
       [
-       "2026-09-18",
-       3.8813
+       "2026-09-21",
+       3.9258
       ]
      ],
      "id": "ndxspx",
@@ -5025,13 +5061,13 @@
      "source": "Yahoo Finance",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 38.6,
+     "value": 38.9,
      "unit": "\u00d7",
      "status": "red",
-     "context": "38.6\u00d7 trailing (10y median ~25\u00d7)",
+     "context": "38.9\u00d7 trailing (10y median ~25\u00d7)",
      "spark": [
       [
        "2026-07-04",
@@ -5352,6 +5388,10 @@
       [
        "2026-09-21",
        38.6
+      ],
+      [
+       "2026-09-22",
+       38.9
       ]
      ],
      "id": "aapl_pe",
@@ -5360,7 +5400,7 @@
      "source": "Yahoo / stockanalysis.com",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     }
    ]
   },
@@ -5377,11 +5417,11 @@
    },
    "indicators": [
     {
-     "value": 11.4,
+     "value": 11.2,
      "unit": "",
-     "status": "amber",
-     "context": "11.4 \u2014 low \u2014 market pricing in calm (13th percentile of 10y)",
-     "percentile": 13,
+     "status": "red",
+     "context": "11.2 \u2014 extreme complacency \u2014 option premium historically cheap (7th percentile of 10y)",
+     "percentile": 7,
      "spark": [
       [
        "2024-10-01",
@@ -5686,6 +5726,10 @@
       [
        "2026-09-18",
        11.39
+      ],
+      [
+       "2026-09-21",
+       11.25
       ]
      ],
      "id": "indiavix",
@@ -5693,14 +5737,14 @@
      "explainer": "Implied volatility of Nifty options. For an FnO trader this is the price of optionality itself: very low VIX = cheap hedges, expensive complacency, and violent unwinds when the regime flips.",
      "source": "NSE indices archive",
      "stale": false,
-     "statusLabel": "CAUTION",
-     "updated": "2026-09-21T06:28:10Z"
+     "statusLabel": "STRETCHED",
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 1.062,
+     "value": 1.203,
      "unit": "",
      "status": "green",
-     "context": "1.062 \u2014 balanced (EOD 2026-09-18)",
+     "context": "1.203 \u2014 balanced (EOD 2026-09-21)",
      "spark": [
       [
        "2026-07-03",
@@ -5921,6 +5965,10 @@
       [
        "2026-09-18",
        1.062
+      ],
+      [
+       "2026-09-21",
+       1.203
       ]
      ],
      "id": "pcr",
@@ -5929,13 +5977,13 @@
      "source": "NSE F&O bhavcopy",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 0.812,
+     "value": 0.822,
      "unit": "",
-     "status": "red",
-     "context": "0.812 \u2014 steep contango \u2014 extreme complacency",
+     "status": "amber",
+     "context": "0.822 \u2014 complacent contango",
      "spark": [
       [
        "2024-09-23",
@@ -6438,8 +6486,8 @@
        0.898
       ],
       [
-       "2026-09-18",
-       0.812
+       "2026-09-21",
+       0.822
       ]
      ],
      "id": "vixterm",
@@ -6447,14 +6495,14 @@
      "explainer": "Spot VIX versus 3-month VIX. Deep contango (<0.85) = markets paying nothing for near-term risk; a flip above 1.0 (backwardation) is the single cleanest 'regime changed' alarm for option sellers.",
      "source": "CBOE",
      "stale": false,
-     "statusLabel": "STRETCHED",
-     "updated": "2026-09-21T06:28:10Z"
+     "statusLabel": "CAUTION",
+     "updated": "2026-09-22T06:19:38Z"
     },
     {
-     "value": 148.1,
+     "value": 142.2,
      "unit": "",
      "status": "amber",
-     "context": "148.1 \u2014 elevated demand for crash hedges",
+     "context": "142.2 \u2014 elevated demand for crash hedges",
      "spark": [
       [
        "2024-09-23",
@@ -6957,8 +7005,8 @@
        145.7
       ],
       [
-       "2026-09-18",
-       148.1
+       "2026-09-21",
+       142.19
       ]
      ],
      "id": "skew",
@@ -6967,7 +7015,7 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-09-21T06:28:10Z"
+     "updated": "2026-09-22T06:19:38Z"
     }
    ]
   }
