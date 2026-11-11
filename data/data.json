@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-10T08:28:18Z",
+ "generated_at": "2026-11-11T07:47:25Z",
  "panels": [
   {
    "id": "us",
@@ -14,10 +14,10 @@
    },
    "indicators": [
     {
-     "value": 39.85,
+     "value": 39.7,
      "unit": "\u00d7",
      "status": "red",
-     "context": "39.85\u00d7 vs ~17 long-term average",
+     "context": "39.7\u00d7 vs ~17 long-term average",
      "spark": [
       [
        "2026-07-04",
@@ -538,6 +538,10 @@
       [
        "2026-11-10",
        39.85
+      ],
+      [
+       "2026-11-11",
+       39.7
       ]
      ],
      "id": "cape",
@@ -546,7 +550,7 @@
      "source": "multpl.com",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
      "value": 380.0,
@@ -586,7 +590,7 @@
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
      "value": 2.12,
@@ -625,13 +629,13 @@
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
-     "value": 0.32,
+     "value": 0.25,
      "unit": "pp",
      "status": "green",
-     "context": "+0.32pp spread \u2014 normal upward slope",
+     "context": "+0.25pp spread \u2014 normal upward slope",
      "spark": [
       [
        "2024-11-12",
@@ -1134,8 +1138,8 @@
        0.35
       ],
       [
-       "2026-11-09",
-       0.32
+       "2026-11-10",
+       0.25
       ]
      ],
      "id": "yieldcurve",
@@ -1144,14 +1148,14 @@
      "source": "US Treasury",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
-     "value": 0.314,
+     "value": 0.321,
      "unit": "",
      "status": "red",
-     "context": "95th percentile of its 10-year range",
-     "percentile": 95,
+     "context": "96th percentile of its 10-year range",
+     "percentile": 96,
      "spark": [
       [
        "2024-11-11",
@@ -1654,8 +1658,8 @@
        0.3284
       ],
       [
-       "2026-11-05",
-       0.3141
+       "2026-11-10",
+       0.3212
       ]
      ],
      "id": "spxm2",
@@ -1664,13 +1668,13 @@
      "source": "Yahoo + FRED M2",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
-     "value": 19.9,
+     "value": 19.5,
      "unit": "",
      "status": "green",
-     "context": "19.9 \u2014 normal volatility regime",
+     "context": "19.5 \u2014 normal volatility regime",
      "spark": [
       [
        "2024-11-11",
@@ -2189,8 +2193,8 @@
        28.18
       ],
       [
-       "2026-11-09",
-       19.92
+       "2026-11-10",
+       19.46
       ]
      ],
      "id": "vix",
@@ -2199,13 +2203,13 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
-     "value": 3.42,
+     "value": 3.34,
      "unit": "pp",
      "status": "amber",
-     "context": "3.42pp over Treasuries \u2014 tight spreads, credit froth building",
+     "context": "3.34pp over Treasuries \u2014 tight spreads, credit froth building",
      "spark": [
       [
        "2024-11-11",
@@ -2732,8 +2736,8 @@
        3.48
       ],
       [
-       "2026-11-06",
-       3.42
+       "2026-11-09",
+       3.34
       ]
      ],
      "id": "hyspread",
@@ -2742,7 +2746,7 @@
      "source": "FRED / ICE BofA",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     }
    ]
   },
@@ -3208,7 +3212,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
      "value": 3.07,
@@ -3660,7 +3664,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
      "value": 36.0,
@@ -4112,7 +4116,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
      "value": 57.5,
@@ -4564,7 +4568,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
      "value": 1.38,
@@ -5016,7 +5020,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     }
    ]
   },
@@ -5033,10 +5037,10 @@
    },
    "indicators": [
     {
-     "value": 37.53,
+     "value": 37.3,
      "unit": "%",
      "status": "red",
-     "context": "37.53% of the index in 10 stocks \u2014 dot-com peak was ~27%",
+     "context": "37.3% of the index in 10 stocks \u2014 dot-com peak was ~27%",
      "spark": [
       [
        "2026-07-04",
@@ -5557,6 +5561,10 @@
       [
        "2026-11-10",
        37.53
+      ],
+      [
+       "2026-11-11",
+       37.3
       ]
      ],
      "id": "top10",
@@ -5565,14 +5573,14 @@
      "source": "SlickCharts",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
-     "value": 3.795,
+     "value": 3.688,
      "unit": "",
      "status": "red",
-     "context": "95th percentile of 10-year range",
-     "percentile": 95,
+     "context": "91st percentile of 10-year range",
+     "percentile": 91,
      "spark": [
       [
        "2024-11-11",
@@ -6075,8 +6083,8 @@
        3.6986
       ],
       [
-       "2026-11-09",
-       3.795
+       "2026-11-10",
+       3.6885
       ]
      ],
      "id": "ndxspx",
@@ -6085,13 +6093,13 @@
      "source": "Yahoo Finance",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
-     "value": 39.0,
+     "value": 38.8,
      "unit": "\u00d7",
      "status": "red",
-     "context": "39.0\u00d7 trailing (10y median ~25\u00d7)",
+     "context": "38.8\u00d7 trailing (10y median ~25\u00d7)",
      "spark": [
       [
        "2026-07-04",
@@ -6612,6 +6620,10 @@
       [
        "2026-11-10",
        39.0
+      ],
+      [
+       "2026-11-11",
+       38.8
       ]
      ],
      "id": "aapl_pe",
@@ -6620,7 +6632,7 @@
      "source": "Yahoo / stockanalysis.com",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     }
    ]
   },
@@ -7086,7 +7098,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
      "value": 1.148,
@@ -7461,13 +7473,13 @@
      "source": "NSE F&O bhavcopy",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
-     "value": 0.955,
+     "value": 0.943,
      "unit": "",
      "status": "green",
-     "context": "0.955 \u2014 normal term structure",
+     "context": "0.943 \u2014 normal term structure",
      "spark": [
       [
        "2024-11-11",
@@ -7970,8 +7982,8 @@
        0.884
       ],
       [
-       "2026-11-09",
-       0.955
+       "2026-11-10",
+       0.943
       ]
      ],
      "id": "vixterm",
@@ -7980,13 +7992,13 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     },
     {
-     "value": 150.3,
+     "value": 151.1,
      "unit": "",
      "status": "amber",
-     "context": "150.3 \u2014 elevated demand for crash hedges",
+     "context": "151.1 \u2014 elevated demand for crash hedges",
      "spark": [
       [
        "2024-11-11",
@@ -8489,8 +8501,8 @@
        149.37
       ],
       [
-       "2026-11-09",
-       150.34
+       "2026-11-10",
+       151.12
       ]
      ],
      "id": "skew",
@@ -8499,7 +8511,7 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-11-10T08:28:18Z"
+     "updated": "2026-11-11T07:47:25Z"
     }
    ]
   }
