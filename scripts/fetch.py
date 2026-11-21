@@ -104,6 +104,24 @@ def percentile_rank(history: Iterable[float | None], value: float) -> int | None
     return round(100.0 * below / len(vals))
 
 
+def monthly(series: Iterable[tuple[str, float]]) -> Series:
+    """Keep the first observation of each calendar month.
+
+    Accumulated history mixes monthly bootstrap samples (10y back) with one
+    sample per trading day since the daily job started. Ranking on the raw
+    mix lets the most recent months dominate the percentile, so rank on one
+    sample per month instead. First-of-month matches the bootstrap sampling
+    and keeps past months fixed as new days arrive.
+    """
+    out: Series = []
+    seen: set[str] = set()
+    for d, v in sorted(series):
+        if d[:7] not in seen:
+            seen.add(d[:7])
+            out.append((d, v))
+    return out
+
+
 def sparkify(series: Series) -> list[list[str | float]]:
     """series: list of (iso_date, value) ascending. Downsample last N years."""
     if not series:
@@ -648,7 +666,7 @@ def build_india_panel(ctx: Ctx) -> dict[str, Any]:
     hist: Hist = ctx["accum"]
 
     def hist_vals(key: str) -> list[float]:
-        return [v for _, v in hist.get(key, [])]
+        return [v for _, v in monthly(hist.get(key, []))]
 
     def spark_of(key: str) -> list[list[str | float]]:
         return sparkify(hist.get(key, []))
@@ -661,8 +679,8 @@ def build_india_panel(ctx: Ctx) -> dict[str, Any]:
             raise ValueError("Nifty 50 P/E missing")
         # NSE switched to consolidated EPS in Apr 2021; earlier P/E prints
         # run ~3-5 points higher and aren't comparable.
-        post2021 = [(d, x) for d, x in clean_pe(hist.get("nifty50_pe", []))
-                    if d >= "2021-04-01"]
+        post2021 = monthly((d, x) for d, x in clean_pe(hist.get("nifty50_pe", []))
+                           if d >= "2021-04-01")
         pct = percentile_rank([x for _, x in post2021], v)
         ctx_line = (f"{v}× — {ordinal(pct)} percentile since the 2021 EPS-methodology change"
                     if pct is not None else f"{v}× (history still accumulating)")
@@ -700,7 +718,7 @@ def build_india_panel(ctx: Ctx) -> dict[str, Any]:
             base_hist = dict(clean_pe(hist.get("nifty50_pe", [])))
             prem_hist = [(d, (p / base_hist[d] - 1) * 100)
                          for d, p in clean_pe(hist.get(key, [])) if base_hist.get(d)]
-            pct = percentile_rank([x for _, x in prem_hist], v)
+            pct = percentile_rank([x for _, x in monthly(prem_hist)], v)
             ctx_line = f"{label} P/E {pe}× vs Nifty {base}× ({v:+.0f}%)"
             if pct is not None:
                 ctx_line += f" — {ordinal(pct)} percentile"
@@ -828,7 +846,7 @@ def build_fno_panel(ctx: Ctx) -> dict[str, Any]:
         if v is None:
             raise ValueError("India VIX unavailable")
         v = round(v, 1)
-        pct = percentile_rank([x for _, x in hist.get("indiavix_close", [])], v)
+        pct = percentile_rank([x for _, x in monthly(hist.get("indiavix_close", []))], v)
         if (pct is not None and pct <= 10) or v < 11:
             st, note = "red", "extreme complacency — option premium historically cheap"
         elif (pct is not None and pct <= 25) or v < 13:
