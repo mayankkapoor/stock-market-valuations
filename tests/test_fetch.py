@@ -62,6 +62,46 @@ class TestCleanPe:
         assert fetch.clean_pe(series) == [("2020-01-01", 25.0), ("2021-01-01", 30.0)]
 
 
+class TestMonthly:
+    def test_keeps_first_observation_per_month(self):
+        series = [("2026-06-01", 1.0), ("2026-07-01", 2.0), ("2026-07-02", 3.0),
+                  ("2026-07-03", 4.0), ("2026-08-03", 5.0)]
+        assert fetch.monthly(series) == [("2026-06-01", 1.0), ("2026-07-01", 2.0),
+                                         ("2026-08-03", 5.0)]
+
+    def test_sorts_unordered_input_and_handles_empty(self):
+        assert fetch.monthly([("2026-07-02", 3.0), ("2026-07-01", 2.0)]) == [("2026-07-01", 2.0)]
+        assert fetch.monthly([]) == []
+
+    def test_daily_tail_does_not_dominate_percentile(self):
+        # 30 monthly samples at 30.0, then 60 daily samples at 10.0 in two months.
+        hist = [(f"{2023 + i // 12}-{i % 12 + 1:02d}-01", 30.0) for i in range(30)]
+        hist += [(f"2026-0{m}-{d:02d}", 10.0) for m in (1, 2) for d in range(1, 31)]
+        raw = fetch.percentile_rank([v for _, v in hist], 20.0)
+        fixed = fetch.percentile_rank([v for _, v in fetch.monthly(hist)], 20.0)
+        assert raw == 67      # recent daily samples swamp the ranking
+        assert fixed == 6     # 2 of 32 months at or below 20
+
+
+class TestIndiaPanelRanking:
+    def test_percentiles_rank_on_monthly_samples(self):
+        months = [f"{2022 + i // 12}-{i % 12 + 1:02d}-01" for i in range(30)]
+        daily = [f"2026-0{m}-{d:02d}" for m in (1, 2) for d in range(2, 30)]
+        accum = {
+            "nifty50_pe": [(d, 25.0) for d in months] + [(d, 20.0) for d in daily],
+            "nifty50_pb": [(d, 4.0) for d in months] + [(d, 3.0) for d in daily],
+        }
+        nse = {a: {"pe": 22.0, "pb": 3.5, "dy": 1.2, "close": 100.0}
+               for a in ("nifty50", "midcap150", "smallcap250")}
+        ctx = {"now_iso": "2026-03-02T00:00:00Z", "today": "2026-03-02", "previous": {},
+               "accum": accum, "nse": nse, "nse_date": "2026-03-02"}
+        by_id = {i["id"]: i for i in fetch.build_india_panel(ctx)["indicators"]}
+        # 32 months of history: 2 at/below the current value -> 6th percentile.
+        # The raw mix (56 daily lows out of 86) would have said 65th.
+        assert by_id["nifty_pe"]["percentile"] == 6
+        assert by_id["nifty_pb"]["percentile"] == 6
+
+
 class TestSparkify:
     def test_empty(self):
         assert fetch.sparkify([]) == []
