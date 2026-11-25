@@ -1,16 +1,16 @@
 {
- "generated_at": "2026-11-24T11:04:35Z",
+ "generated_at": "2026-11-25T09:54:12Z",
  "panels": [
   {
    "id": "us",
    "title": "US Market",
    "subtitle": "Your large/mid/small-cap US index exposure \u2014 classic valuation, complacency and macro bubble measures.",
    "summary": {
-    "red": 3,
-    "amber": 2,
+    "red": 4,
+    "amber": 1,
     "green": 2,
     "na": 0,
-    "verdict": "Mixed signals: froth building, watch closely"
+    "verdict": "Elevated risk: measures stretched"
    },
    "indicators": [
     {
@@ -638,7 +638,7 @@
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
      "value": 2.12,
@@ -677,13 +677,13 @@
      "source": "FRED Z.1 (quarterly)",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
-     "value": 0.29,
+     "value": 0.28,
      "unit": "pp",
      "status": "green",
-     "context": "+0.29pp spread \u2014 normal upward slope",
+     "context": "+0.28pp spread \u2014 normal upward slope",
      "spark": [
       [
        "2024-11-25",
@@ -1186,8 +1186,8 @@
        0.29
       ],
       [
-       "2026-11-23",
-       0.29
+       "2026-11-24",
+       0.28
       ]
      ],
      "id": "yieldcurve",
@@ -1196,14 +1196,14 @@
      "source": "US Treasury",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
-     "value": 0.295,
+     "value": 0.308,
      "unit": "",
-     "status": "amber",
-     "context": "89th percentile of its 10-year range",
-     "percentile": 89,
+     "status": "red",
+     "context": "93rd percentile of its 10-year range",
+     "percentile": 93,
      "spark": [
       [
        "2024-11-25",
@@ -1671,43 +1671,43 @@
       ],
       [
        "2026-10-05",
-       0.332
+       0.3303
       ],
       [
        "2026-10-09",
-       0.3336
+       0.3319
       ],
       [
        "2026-10-15",
-       0.3307
+       0.3291
       ],
       [
        "2026-10-21",
-       0.3313
+       0.3296
       ],
       [
        "2026-10-27",
-       0.3298
+       0.3282
       ],
       [
        "2026-11-02",
-       0.3221
+       0.3205
       ],
       [
        "2026-11-06",
-       0.3151
+       0.3135
       ],
       [
        "2026-11-12",
-       0.3243
+       0.3226
       ],
       [
        "2026-11-18",
-       0.3128
+       0.3112
       ],
       [
-       "2026-11-20",
-       0.2951
+       "2026-11-23",
+       0.3075
       ]
      ],
      "id": "spxm2",
@@ -1715,14 +1715,14 @@
      "explainer": "The index divided by the money supply \u2014 strips monetary inflation out of 'record highs'. High percentile = stocks rich even after adjusting for all the new money.",
      "source": "Yahoo + FRED M2",
      "stale": false,
-     "statusLabel": "CAUTION",
-     "updated": "2026-11-24T11:04:35Z"
+     "statusLabel": "STRETCHED",
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
-     "value": 26.6,
+     "value": 26.4,
      "unit": "",
      "status": "green",
-     "context": "26.6 \u2014 normal volatility regime",
+     "context": "26.4 \u2014 normal volatility regime",
      "spark": [
       [
        "2024-11-25",
@@ -2241,8 +2241,8 @@
        28.44
       ],
       [
-       "2026-11-23",
-       26.62
+       "2026-11-24",
+       26.36
       ]
      ],
      "id": "vix",
@@ -2251,13 +2251,13 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
-     "value": 3.76,
+     "value": 3.63,
      "unit": "pp",
      "status": "amber",
-     "context": "3.76pp over Treasuries \u2014 tight spreads, credit froth building",
+     "context": "3.63pp over Treasuries \u2014 tight spreads, credit froth building",
      "spark": [
       [
        "2024-11-25",
@@ -2784,8 +2784,8 @@
        3.52
       ],
       [
-       "2026-11-20",
-       3.76
+       "2026-11-23",
+       3.63
       ]
      ],
      "id": "hyspread",
@@ -2794,7 +2794,7 @@
      "source": "FRED / ICE BofA",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     }
    ]
   },
@@ -3296,7 +3296,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
      "value": 3.11,
@@ -3784,7 +3784,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
      "value": 35.4,
@@ -4272,7 +4272,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
      "value": 54.6,
@@ -4760,7 +4760,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
      "value": 1.35,
@@ -5248,7 +5248,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     }
    ]
   },
@@ -5257,18 +5257,18 @@
    "title": "US Tech & Concentration",
    "subtitle": "Your AAPL and tech-heavy exposure: concentration and relative valuation measures.",
    "summary": {
-    "red": 3,
-    "amber": 0,
+    "red": 2,
+    "amber": 1,
     "green": 0,
     "na": 0,
     "verdict": "Elevated risk: measures stretched"
    },
    "indicators": [
     {
-     "value": 37.23,
+     "value": 36.91,
      "unit": "%",
      "status": "red",
-     "context": "37.23% of the index in 10 stocks \u2014 dot-com peak was ~27%",
+     "context": "36.91% of the index in 10 stocks \u2014 dot-com peak was ~27%",
      "spark": [
       [
        "2026-07-04",
@@ -5845,6 +5845,10 @@
       [
        "2026-11-24",
        37.23
+      ],
+      [
+       "2026-11-25",
+       36.91
       ]
      ],
      "id": "top10",
@@ -5853,14 +5857,14 @@
      "source": "SlickCharts",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
-     "value": 3.695,
+     "value": 3.622,
      "unit": "",
-     "status": "red",
-     "context": "91st percentile of 10-year range",
-     "percentile": 91,
+     "status": "amber",
+     "context": "85th percentile of 10-year range",
+     "percentile": 85,
      "spark": [
       [
        "2024-11-25",
@@ -6363,8 +6367,8 @@
        3.7026
       ],
       [
-       "2026-11-19",
-       3.6953
+       "2026-11-24",
+       3.6222
       ]
      ],
      "id": "ndxspx",
@@ -6372,14 +6376,14 @@
      "explainer": "Tech's valuation premium over the broad market. At the dot-com peak this ratio collapsed 60% peak-to-trough \u2014 it is your AAPL/tech overweight's main risk.",
      "source": "Yahoo Finance",
      "stale": false,
-     "statusLabel": "STRETCHED",
-     "updated": "2026-11-24T11:04:35Z"
+     "statusLabel": "CAUTION",
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
-     "value": 38.9,
+     "value": 39.4,
      "unit": "\u00d7",
      "status": "red",
-     "context": "38.9\u00d7 trailing (10y median ~25\u00d7)",
+     "context": "39.4\u00d7 trailing (10y median ~25\u00d7)",
      "spark": [
       [
        "2026-07-04",
@@ -6956,6 +6960,10 @@
       [
        "2026-11-24",
        38.9
+      ],
+      [
+       "2026-11-25",
+       39.4
       ]
      ],
      "id": "aapl_pe",
@@ -6964,7 +6972,7 @@
      "source": "Yahoo / stockanalysis.com",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     }
    ]
   },
@@ -6974,8 +6982,8 @@
    "subtitle": "What the options market is pricing \u2014 complacency, positioning and regime signals for FnO.",
    "summary": {
     "red": 1,
-    "amber": 2,
-    "green": 1,
+    "amber": 1,
+    "green": 2,
     "na": 0,
     "verdict": "Mixed signals: froth building, watch closely"
    },
@@ -7466,7 +7474,7 @@
      "source": "NSE indices archive",
      "stale": false,
      "statusLabel": "NORMAL",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
      "value": 0.82,
@@ -7877,13 +7885,13 @@
      "source": "NSE F&O bhavcopy",
      "stale": false,
      "statusLabel": "CAUTION",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
-     "value": 1.044,
+     "value": 1.035,
      "unit": "",
      "status": "red",
-     "context": "1.044 \u2014 backwardation \u2014 stress regime is ON",
+     "context": "1.035 \u2014 backwardation \u2014 stress regime is ON",
      "spark": [
       [
        "2024-11-25",
@@ -8386,8 +8394,8 @@
        1.011
       ],
       [
-       "2026-11-23",
-       1.044
+       "2026-11-24",
+       1.035
       ]
      ],
      "id": "vixterm",
@@ -8396,13 +8404,13 @@
      "source": "CBOE",
      "stale": false,
      "statusLabel": "STRETCHED",
-     "updated": "2026-11-24T11:04:35Z"
+     "updated": "2026-11-25T09:54:12Z"
     },
     {
-     "value": 140.4,
+     "value": 139.2,
      "unit": "",
-     "status": "amber",
-     "context": "140.4 \u2014 elevated demand for crash hedges",
+     "status": "green",
+     "context": "139.2 \u2014 normal tail pricing",
      "spark": [
       [
        "2024-11-25",
@@ -8905,8 +8913,8 @@
        140.86
       ],
       [
-       "2026-11-23",
-       140.37
+       "2026-11-24",
+       139.16
       ]
      ],
      "id": "skew",
@@ -8914,8 +8922,8 @@
      "explainer": "Prices of far out-of-the-money S&P puts vs at-the-money. High SKEW with low VIX = smart money quietly paying up for crash insurance while the surface looks calm.",
      "source": "CBOE",
      "stale": false,
-     "statusLabel": "CAUTION",
-     "updated": "2026-11-24T11:04:35Z"
+     "statusLabel": "NORMAL",
+     "updated": "2026-11-25T09:54:12Z"
     }
    ]
   }
